@@ -1,6 +1,8 @@
 # SG Radio for Windows 8.1
 Windows 8.1 "Universal" App for Singapore Radio stations
 
+![Screenshot](https://raw.githubusercontent.com/ReignOfComputer/SG-Radio-for-Windows-8.1/master/SGRadioSS.png)
+
 Back in 2012, I was actively developing Windows Phone and Windows 8's Metro/Modern/Universal apps - which eventually led to a stint at Microsoft. SG Radio was one such app, and was developed and released as a launch app for Windows 8. SG Radio then went through a drastic upgrade in 2013 (for the release of Windows 8.1), and used as a showcase app in many of Microsoft's demos for both consumers and developers.
 
 SG Radio aggregates various Singapore Radio stations, including Internet radio stations. It's able to get the title of the track that's currently playing and in the past, used Mediacorp's now defunct API to retrieve lyrics as well.
