@@ -176,7 +176,8 @@
                 <AppBarButton x:Name="stopBtn" Icon="Stop" Label="Stop" Click="stop_Click" IsEnabled="False" RequestedTheme="Light" />
                 <AppBarButton x:Name="currentSongBtn" Icon="Audio" Label="Current Song" Click="currentSong_Click" IsEnabled="False" RequestedTheme="Light" />
                 <AppBarButton x:Name="lyricsBtn" Icon="MusicInfo" Label="Lyrics" Click="lyrics_Click" IsEnabled="False" RequestedTheme="Light" />
-                <AppBarButton x:Name="refreshBtn" Icon="Refresh" Label="Refresh" Click="refresh_Click" IsEnabled="False" RequestedTheme="Light" />
+                <AppBarButton x:Name="settingsBtn" Icon="Setting" Label="Settings" Click="settings_Click" IsEnabled="True" RequestedTheme="Light" />
+                <!--<AppBarButton x:Name="refreshBtn" Icon="Refresh" Label="Refresh" Click="refresh_Click" IsEnabled="False" RequestedTheme="Light" />-->
 
             </CommandBar.PrimaryCommands>
             <CommandBar.SecondaryCommands>
@@ -317,7 +318,7 @@
             </HubSection>
         </Hub>
         <ProgressRing x:Name="progressring" IsActive="False" Foreground="DarkBlue" Grid.RowSpan="2" Height="100" Width="100" />
-        <MediaElement x:Name="mediaElement1" Volume="1" MediaFailed="mediaElement1_MediaFailed_1" MediaOpened="mediaElement1_MediaOpened_1" MediaEnded="mediaElement1_MediaEnded_1" AudioCategory="BackgroundCapableMedia" Visibility="Collapsed" />
+        <MediaElement x:Name="mediaElement1" Volume="1" MediaFailed="mediaElement1_MediaFailed_1" MediaOpened="mediaElement1_MediaOpened_1" MediaEnded="mediaElement1_MediaEnded_1" AudioCategory="BackgroundCapableMedia" Visibility="Collapsed" RealTimePlayback="True" />
 
         <Grid>
             <Controls:CustomDialog x:FieldModifier="public" x:Name="lyricsDialog"
@@ -347,10 +348,10 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="statusGrid" Visibility="Collapsed" VerticalAlignment="Top" Width="270" HorizontalAlignment="Center" Margin="0,52,0,0">
+        <Grid x:Name="statusGrid" Visibility="Collapsed" VerticalAlignment="Top" Width="350" HorizontalAlignment="Center" Margin="0,52,0,0">
             <StackPanel>
-                <TextBlock x:Name="currStation" Text="Current Station:" FontSize="14" />
-                <TextBlock  x:Name="currTrack" Text="Current Track:" FontSize="14" TextTrimming="Clip" ToolTipService.ToolTip="" />
+                <TextBlock x:Name="currStation" TextAlignment="Center" Text="Current Station:" FontSize="14" />
+                <TextBlock  x:Name="currTrack" TextAlignment="Center" Text="Current Track:" FontSize="14" TextTrimming="Clip" ToolTipService.ToolTip="" />
                 <Slider x:Name="sliderVolume" ValueChanged="VolumeChangedEvent" BorderThickness="2" ToolTipService.ToolTip="Volume" Orientation="Horizontal" RenderTransformOrigin="0.5,0.5" Height="30" Width="270" />
             </StackPanel>
         </Grid>

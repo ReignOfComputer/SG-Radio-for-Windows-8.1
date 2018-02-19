@@ -3,19 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.ApplicationSettings;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Callisto.Controls;
 using Windows.UI;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
@@ -199,93 +191,19 @@ namespace SG_Radio_for_8._1
             await Launcher.LaunchUriAsync(new Uri("mailto://roc@reignofcomputer.com?subject=SG Radio for Windows 8", UriKind.Absolute));
         }
 
+        private readonly string[] titleId = { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011", "4012", "4013", "4014",
+            "5000", "5001", "5002", "5003", "5004", "5005", "5006", "5007", "5008", "5009", "5010", "5011", "5012" };
+
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
 
-            if (SecondaryTile.Exists("1000"))
+            foreach (string titleId in titleId)
             {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1000").Clear();
-            }
-            if (SecondaryTile.Exists("1001"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1001").Clear();
-            }
-            if (SecondaryTile.Exists("1002"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1002").Clear();
-            }
-            if (SecondaryTile.Exists("1003"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1003").Clear();
-            }
-            if (SecondaryTile.Exists("1004"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1004").Clear();
-            }
-            if (SecondaryTile.Exists("1005"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1005").Clear();
-            }
-            if (SecondaryTile.Exists("1006"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1006").Clear();
-            }
-            if (SecondaryTile.Exists("1007"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1007").Clear();
-            }
-            if (SecondaryTile.Exists("1008"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1008").Clear();
-            }
-            if (SecondaryTile.Exists("1009"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1009").Clear();
-            }
-            if (SecondaryTile.Exists("1010"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1010").Clear();
-            }
-            if (SecondaryTile.Exists("1011"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1011").Clear();
-            }
-            if (SecondaryTile.Exists("2000"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2000").Clear();
-            }
-            if (SecondaryTile.Exists("2001"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2001").Clear();
-            }
-            if (SecondaryTile.Exists("2002"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2002").Clear();
-            }
-            if (SecondaryTile.Exists("2003"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2003").Clear();
-            }
-            if (SecondaryTile.Exists("2004"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2004").Clear();
-            }
-            if (SecondaryTile.Exists("2005"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2005").Clear();
-            }
-            if (SecondaryTile.Exists("2006"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2006").Clear();
-            }
-            if (SecondaryTile.Exists("2007"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2007").Clear();
-            }
-            if (SecondaryTile.Exists("2008"))
-            {
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2008").Clear();
+                if (SecondaryTile.Exists(titleId))
+                {
+                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile(titleId).Clear();
+                }
             }
 
             var deferral = e.SuspendingOperation.GetDeferral();

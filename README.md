@@ -19,6 +19,18 @@ Most of the code you'll see here is crap, so I apologize in advance. This was de
 
 -----
 
+v4.0.0.0 - 19th February 2018
+- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!
+- FIXED: All the streams that have been migrated
+- FIXED: All the rebranding for the stations
+- ADDED: Various new stations
+- ADDED: Settings Charms button in AppBar for Windows 10 users
+- CHANGED: Optimized how streaming works, much less lag now
+- CHANGED: Song name now appears before the artist instead of the other way around
+- CHANGED: Current playing station and track are now neatly centered
+- CHANGED: Removed redundant Refresh button
+- WARNING: All favorites and pinned tiles need to be reset after this major update
+
 v3.4.0.5 - 9th February 2015
 - FIXED: Pesky stations. Fixed Kiss 92 stream migration
 

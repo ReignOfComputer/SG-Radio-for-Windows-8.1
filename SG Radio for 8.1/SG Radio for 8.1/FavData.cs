@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SG_Radio_for_8._1
+﻿namespace SG_Radio_for_8._1
 {
     public class FavData
         {

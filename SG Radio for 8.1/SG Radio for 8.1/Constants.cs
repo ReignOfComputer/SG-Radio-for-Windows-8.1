@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SG_Radio_for_8._1
+﻿namespace SG_Radio_for_8._1
 {
     public class Constants
     {
@@ -13,109 +7,144 @@ namespace SG_Radio_for_8._1
             string itemName;
             switch (id)
             {
-                case "1000":
-                    {
-                        itemName = "Gold 90.5FM";
-                        break;
-                    }
-                case "1001":
-                    {
-                        itemName = "HOT FM91.3";
-                        break;
-                    }
-                case "1002":
-                    {
-                        itemName = "Kiss 92FM";
-                        break;
-                    }
-                case "1003":
-                    {
-                        itemName = "Symphony 92.4FM";
-                        break;
-                    }
-                case "1004":
-                    {
-                        itemName = "938LIVE";
-                        break;
-                    }
-                case "1005":
-                    {
-                        itemName = "Class 95FM";
-                        break;
-                    }
-                case "1006":
-                    {
-                        itemName = "987FM";
-                        break;
-                    }
-                case "1007":
-                    {
-                        itemName = "Lush 99.5FM";
-                        break;
-                    }
-                case "1008":
-                    {
-                        itemName = "973FM";
-                        break;
-                    }
-                case "1009":
-                    {
-                        itemName = "The Live Radio";
-                        break;
-                    }
-                case "1010":
+                case "4000":
                     {
                         itemName = "BBC World Service";
                         break;
                     }
-                case "1011":
+                case "4001":
                     {
-                        itemName = "Power 98 FM";
+                        itemName = "Money FM 89.3";
                         break;
                     }
-                case "2000":
+                case "4002":
                     {
-                        itemName = "Ria 89.7FM";
+                        itemName = "GOLD 90.5FM";
                         break;
                     }
-                case "2001":
+                case "4003":
+                    {
+                        itemName = "One FM 91.3";
+                        break;
+                    }
+                case "4004":
+                    {
+                        itemName = "Kiss 92FM";
+                        break;
+                    }
+                case "4005":
+                    {
+                        itemName = "Symphony 92.4FM";
+                        break;
+                    }
+                case "4006":
+                    {
+                        itemName = "938Now";
+                        break;
+                    }
+                case "4007":
+                    {
+                        itemName = "Class 95FM";
+                        break;
+                    }
+                case "4008":
+                    {
+                        itemName = "Power 98FM";
+                        break;
+                    }
+                case "4009":
+                    {
+                        itemName = "987FM";
+                        break;
+                    }
+                case "4010":
+                    {
+                        itemName = "973FM";
+                        break;
+                    }
+                case "4011":
+                    {
+                        itemName = "Asia Expat Radio";
+                        break;
+                    }
+                case "4012":
+                    {
+                        itemName = "Bible Witness Web Radio";
+                        break;
+                    }
+                case "4013":
+                    {
+                        itemName = "Hitz.fm";
+                        break;
+                    }
+                case "4014":
+                    {
+                        itemName = "Orion Station";
+                        break;
+                    }
+                case "5000":
+                    {
+                        itemName = "88.3Jia FM";
+                        break;
+                    }
+                case "5001":
                     {
                         itemName = "Y.E.S. 93.3FM";
                         break;
                     }
-                case "2002":
+                case "5002":
                     {
-                        itemName = "Warna 94.2FM";
+                        itemName = "Capital 95.8FM";
                         break;
                     }
-                case "2003":
+                case "5003":
                     {
-                        itemName = "Capital 95.8";
+                        itemName = "96.3 Hao FM";
                         break;
                     }
-                case "2004":
-                    {
-                        itemName = "XFM 96.3";
-                        break;
-                    }
-                case "2005":
-                    {
-                        itemName = "Oli 96.8FM";
-                        break;
-                    }
-                case "2006":
+                case "5004":
                     {
                         itemName = "Love 97.2FM";
                         break;
                     }
-                case "2007":
+                case "5005":
                     {
                         itemName = "UFM 1003";
                         break;
                     }
-                case "2008":
+                case "5006":
                     {
-                        itemName = "88.3 Jia FM";
+                        itemName = "Ria 89.7FM";
+                        break;
+                    }
+                case "5007":
+                    {
+                        itemName = "Warna 94.2FM";
+                        break;
+                    }
+                case "5008":
+                    {
+                        itemName = "Oli 96.8FM";
+                        break;
+                    }
+                case "5009":
+                    {
+                        itemName = "Radio Melody";
+                        break;
+                    }
+                case "5010":
+                    {
+                        itemName = "Naga FM";
+                        break;
+                    }
+                case "5011":
+                    {
+                        itemName = "DesiNetworks";
+                        break;
+                    }
+                case "5012":
+                    {
+                        itemName = "Desi Dance";
                         break;
                     }
                 default:
@@ -125,214 +154,154 @@ namespace SG_Radio_for_8._1
             return itemName;
         }
 
-        public static string getLyrics(string id)
-        {
-            string lyricsAPI;
-            switch (id)
-            {
-                case "1000":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=905";
-                        break;
-                    }
-                case "1001":
-                    {
-                        lyricsAPI = "http://meta.radioactive.sg/index.php?format=json&m=913fm";
-                        break;
-                    }
-                case "1002":
-                    {
-                        lyricsAPI = "http://meta.radioactive.sg/index.php?format=json&m=sph-kiss92";
-                        break;
-                    }
-                case "1003":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=924";
-                        break;
-                    }
-                case "1004":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=938";
-                        break;
-                    }
-                case "1005":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=950";
-                        break;
-                    }
-                case "1006":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=987";
-                        break;
-                    }
-                case "1007":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=995";
-                        break;
-                    }
-                case "2000":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=897";
-                        break;
-                    }
-                case "2001":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=933";
-                        break;
-                    }
-                case "2002":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=942";
-                        break;
-                    }
-                case "2003":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=958";
-                        break;
-                    }
-                case "2004":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=963";
-                        break;
-                    }
-                case "2005":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=968";
-                        break;
-                    }
-                case "2006":
-                    {
-                        lyricsAPI = "http://www.mediacorpradio.sg/radioliveplayer/lyrics.asp?id=972";
-                        break;
-                    }
-                case "2007":
-                    {
-                        lyricsAPI = "http://meta.radioactive.sg/index.php?format=json&m=1003fm";
-                        break;
-                    }
-                default:
-                    lyricsAPI = "Unknown";
-                    break;
-            }
-            return lyricsAPI;
-        }
-
         public static string getStream(string id)
         {
             string itemStream;
             switch (id)
             {
-                case "1000":
+                case "4000":
+                    {
+                        itemStream = "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk";
+                        break;
+                    }
+                case "4001":
+                    {
+                        itemStream = "http://20673.live.streamtheworld.com/MONEY_893_SC";
+                        break;
+                    }
+                case "4002":
                     {
                         itemStream = "http://mediacorp.rastream.com/905fm";
                         break;
                     }
-                case "1001":
+                case "4003":
                     {
                         itemStream = "http://sph.rastream.com/913fm";
                         break;
                     }
-                case "1002":
+                case "4004":
                     {
                         itemStream = "http://sph.rastream.com/sph-kiss92";
                         break;
                     }
-                case "1003":
+                case "4005":
                     {
                         itemStream = "http://mediacorp.rastream.com/924fm";
                         break;
                     }
-                case "1004":
+                case "4006":
                     {
                         itemStream = "http://mediacorp.rastream.com/938fm";
                         break;
                     }
-                case "1005":
+                case "4007":
                     {
                         itemStream = "http://mediacorp.rastream.com/950fm";
                         break;
                     }
-                case "1006":
+                case "4008":
+                    {
+                        itemStream = "http://18583.live.streamtheworld.com/POWER98.mp3";
+                        break;
+                    }
+                case "4009":
                     {
                         itemStream = "http://mediacorp.rastream.com/987fm";
                         break;
                     }
-                case "1007":
+                case "4010":
                     {
-                        itemStream = "http://mediacorp.rastream.com/995fm";
+                        itemStream = "http://icecasthost.heropiggy95.xyz:8650/stream";
                         break;
                     }
-                case "1008":
+                case "4011":
                     {
-                        itemStream = "http://209.105.250.73:8650/stream";
+                        itemStream = "http://axr.rastream.com/axr-singapore";
                         break;
                     }
-                case "1009":
+                case "4012":
                     {
-                        itemStream = "http://209.105.250.73:8650/stream"; // Placeholder
-                        // itemStream = "http://s3.viastreaming.net:8530/"; The Live Radio is DOWN
+                        itemStream = "http://biblewitness.com:8000/;stream.nsv";
                         break;
                     }
-                case "1010":
+                case "4013":
                     {
-                        itemStream = "http://livewmstream-ws.bbc.co.uk.edgestreams.net/reflector:38972";
+                        itemStream = "http://38.107.243.226:8920/;stream.nsv";
                         break;
                     }
-                case "1011":
+                case "4014":
                     {
-                        itemStream = "http://streaming.clickhere2.com/power98.asx";
+                        itemStream = "http://188.165.192.5:8528/stream/";
                         break;
                     }
-                case "2000":
+                case "5000":
                     {
-                        itemStream = "http://mediacorp.rastream.com/897fm";
+                        itemStream = "http://19053.live.streamtheworld.com/883JIA_S";
                         break;
                     }
-                case "2001":
+                case "5001":
                     {
                         itemStream = "http://mediacorp.rastream.com/933fm";
                         break;
                     }
-                case "2002":
-                    {
-                        itemStream = "http://mediacorp.rastream.com/942fm";
-                        break;
-                    }
-                case "2003":
+                case "5002":
                     {
                         itemStream = "http://mediacorp.rastream.com/958fm";
                         break;
                     }
-                case "2004":
+                case "5003":
                     {
-                        itemStream = "http://mediacorp.rastream.com/963fm";
+                        itemStream = "http://20673.live.streamtheworld.com/HAO_963_SC";
                         break;
                     }
-                case "2005":
+                case "5004":
                     {
-                        itemStream = "http://mediacorp.rastream.com/968fm";
+                        itemStream = "http://mediacorp.rastream.com/972f";
                         break;
                     }
-                case "2006":
-                    {
-                        itemStream = "http://mediacorp.rastream.com/972fm";
-                        break;
-                    }
-                case "2007":
+                case "5005":
                     {
                         itemStream = "http://sph.rastream.com/1003fm";
                         break;
                     }
-                case "2008":
+                case "5006":
                     {
-                        itemStream = "http://streaming.clickhere2.com/883jia.asx";
+                        itemStream = "http://mediacorp.rastream.com/897fm";
+                        break;
+                    }
+                case "5007":
+                    {
+                        itemStream = "http://mediacorp.rastream.com/942fm";
+                        break;
+                    }
+                case "5008":
+                    {
+                        itemStream = "http://mediacorp.rastream.com/968fm";
+                        break;
+                    }
+                case "5009":
+                    {
+                        itemStream = "http://37.59.28.208:8113/stream";
+                        break;
+                    }
+                case "5010":
+                    {
+                        itemStream = "http://songs.nagafm.com:8006/stream/1/";
+                        break;
+                    }
+                case "5011":
+                    {
+                        itemStream = "http://192.99.8.192:3224/;stream.nsv";
+                        break;
+                    }
+                case "5012":
+                    {
+                        itemStream = "http://usa6.fastcast4u.com:5029/stream";
                         break;
                     }
                 default:
-                    {
-                        itemStream = "Unknown";
-                        break;
-                    }
+                    itemStream = "Unknown";
+                    break;
             }
             return itemStream;
         }
@@ -342,69 +311,59 @@ namespace SG_Radio_for_8._1
             string mediacorpAPI;
             switch (id)
             {
-                case "1000":
+                case "4002":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=905";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=905fm";
                         break;
                     }
-                case "1003":
+                case "4005":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=924";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=924fm";
                         break;
                     }
-                case "1004":
+                case "4006":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=938";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=938fm";
                         break;
                     }
-                case "1005":
+                case "4007":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=950";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=950fm";
                         break;
                     }
-                case "1006":
+                case "4009":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=987";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=987fm";
                         break;
                     }
-                case "1007":
+                case "5001":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=995";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=933fm";
                         break;
                     }
-                case "2000":
+                case "5002":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=897";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=958fm";
                         break;
                     }
-                case "2001":
+                case "5004":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=933";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=972fm";
                         break;
                     }
-                case "2002":
+                case "5006":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=942";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=897fm";
                         break;
                     }
-                case "2003":
+                case "5007":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=958";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=942fm";
                         break;
                     }
-                case "2004":
+                case "5008":
                     {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=963";
-                        break;
-                    }
-                case "2005":
-                    {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=968";
-                        break;
-                    }
-                case "2006":
-                    {
-                        mediacorpAPI = "http://www.mediacorpradio.sg/radioliveplayer/albumInfo.asp?id=972";
+                        mediacorpAPI = "http://liveradio.toggle.sg/api/playouthistory?stationId=968fm";
                         break;
                     }
                 default:
@@ -419,109 +378,144 @@ namespace SG_Radio_for_8._1
             string itemImage;
             switch (id)
             {
-                case "1000":
+                case "4000":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_1_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_01.png";
                         break;
                     }
-                case "1001":
+                case "4001":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_2_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_02.png";
                         break;
                     }
-                case "1002":
+                case "4002":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_3_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_03.png";
                         break;
                     }
-                case "1003":
+                case "4003":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_4_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_04.png";
                         break;
                     }
-                case "1004":
+                case "4004":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_5_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_05.png";
                         break;
                     }
-                case "1005":
+                case "4005":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_6_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_06.png";
                         break;
                     }
-                case "1006":
+                case "4006":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_7_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_07.png";
                         break;
                     }
-                case "1007":
+                case "4007":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_8_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_08.png";
                         break;
                     }
-                case "1008":
+                case "4008":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_9_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_09.png";
                         break;
                     }
-                case "1009":
+                case "4009":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_10_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_10.png";
                         break;
                     }
-                case "1010":
+                case "4010":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_11_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_11.png";
                         break;
                     }
-                case "1011":
+                case "4011":
                     {
-                        itemImage = "ms-appx:///Images/English/portal_12_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_12.png";
                         break;
                     }
-                case "2000":
+                case "4012":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_1_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_13.png";
                         break;
                     }
-                case "2001":
+                case "4013":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_2_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_14.png";
                         break;
                     }
-                case "2002":
+                case "4014":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_3_600_C.png";
+                        itemImage = "ms-appx:///Images/English/English_15.png";
                         break;
                     }
-                case "2003":
+                case "5000":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_4_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_01.png";
                         break;
                     }
-                case "2004":
+                case "5001":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_5_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_02.png";
                         break;
                     }
-                case "2005":
+                case "5002":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_6_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_03.png";
                         break;
                     }
-                case "2006":
+                case "5003":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_7_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_04.png";
                         break;
                     }
-                case "2007":
+                case "5004":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_8_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_05.png";
                         break;
                     }
-                case "2008":
+                case "5005":
                     {
-                        itemImage = "ms-appx:///Images/Others/news_9_600_C.png";
+                        itemImage = "ms-appx:///Images/Others/Others_06.png";
+                        break;
+                    }
+                case "5006":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_07.png";
+                        break;
+                    }
+                case "5007":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_08.png";
+                        break;
+                    }
+                case "5008":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_09.png";
+                        break;
+                    }
+                case "5009":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_10.png";
+                        break;
+                    }
+                case "5010":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_11.png";
+                        break;
+                    }
+                case "5011":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_12.png";
+                        break;
+                    }
+                case "5012":
+                    {
+                        itemImage = "ms-appx:///Images/Others/Others_13.png";
                         break;
                     }
                 default:
@@ -536,68 +530,89 @@ namespace SG_Radio_for_8._1
             string gotoURL;
             switch (id)
             {
-                case "1000":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/gold90/";
+                case "4000":
+                    gotoURL = "https://www.bbc.co.uk/worldserviceradio";
                     break;
-                case "1001":
-                    gotoURL = "http://www.radio913.com/";
+                case "4001":
+                    gotoURL = "http://www.moneyfm893.sg/";
                     break;
-                case "1002":
-                    gotoURL = "http://kiss92.sg/";
+                case "4002":
+                    gotoURL = "https://radio.toggle.sg/en/gold-905-fm";
                     break;
-                case "1003":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/symphony924/";
+                case "4003":
+                    gotoURL = "https://onefm.sg/";
                     break;
-                case "1004":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/938live/";
+                case "4004":
+                    gotoURL = "https://kiss92.sg/";
                     break;
-                case "1005":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/class95/";
+                case "4005":
+                    gotoURL = "https://radio.toggle.sg/en/symphony-924-fm";
                     break;
-                case "1006":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/987fm/";
+                case "4006":
+                    gotoURL = "https://radio.toggle.sg/en/938now";
                     break;
-                case "1007":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/lush995/";
+                case "4007":
+                    gotoURL = "https://radio.toggle.sg/en/class-95-fm";
                     break;
-                case "1008":
-                    gotoURL = "http://973fm.webs.com/";
+                case "4008":
+                    gotoURL = "https://www.power98.com.sg/";
                     break;
-                case "1009":
-                    gotoURL = "http://theliveradio.sg/";
+                case "4009":
+                    gotoURL = "https://radio.toggle.sg/en/987";
                     break;
-                case "1010":
-                    gotoURL = "http://www.bbc.co.uk/worldserviceradio";
+                case "4010":
+                    gotoURL = "http://973fm.weebly.com/";
                     break;
-                case "1011":
-                    gotoURL = "http://www.power98.com.sg/";
+                case "4011":
+                    gotoURL = "http://www.axr.online/";
                     break;
-                case "2000":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/ria897/default.aspx";
+                case "4012":
+                    gotoURL = "http://www.biblewitness.com/webradio/";
                     break;
-                case "2001":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/yes933";
+                case "4013":
+                    gotoURL = "https://tunein.com/radio/HitzFM-Singapore-s178364/";
                     break;
-                case "2002":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/warna942/default.aspx";
+                case "4014":
+                    gotoURL = "http://www.orionstation.net/";
                     break;
-                case "2003":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/capital958/";
+                case "5000":
+                    gotoURL = "https://www.883jia.com.sg/";
                     break;
-                case "2004":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/xfm963/default.aspx";
+                case "5001":
+                    gotoURL = "https://radio.toggle.sg/en/yes-933-fm";
                     break;
-                case "2005":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/oli968/default.aspx";
+                case "5002":
+                    gotoURL = "https://radio.toggle.sg/en/capital-958-fm";
                     break;
-                case "2006":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/love972/";
+                case "5003":
+                    gotoURL = "http://www.fm963.sg/";
                     break;
-                case "2007":
-                    gotoURL = "http://www.ufm1003.sg/";
+                case "5004":
+                    gotoURL = "https://radio.toggle.sg/en/love-972-fm";
                     break;
-                case "2008":
-                    gotoURL = "http://www.883jia.com.sg/";
+                case "5005":
+                    gotoURL = "https://ufm1003.sg/";
+                    break;
+                case "5006":
+                    gotoURL = "https://radio.toggle.sg/en/ria-897-fm";
+                    break;
+                case "5007":
+                    gotoURL = "https://radio.toggle.sg/en/warna-942-fm";
+                    break;
+                case "5008":
+                    gotoURL = "https://radio.toggle.sg/en/oli-968-fm";
+                    break;
+                case "5009":
+                    gotoURL = "http://www.rmelody.net/";
+                    break;
+                case "5010":
+                    gotoURL = "http://www.nagafm.com/";
+                    break;
+                case "5011":
+                    gotoURL = "https://www.facebook.com/desinetworks/";
+                    break;
+                case "5012":
+                    gotoURL = "https://www.facebook.com/desinetworks/";
                     break;
                 default:
                     gotoURL = "Unknown";
@@ -611,68 +626,89 @@ namespace SG_Radio_for_8._1
             string gotoURL;
             switch (id)
             {
-                case "1000":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/gold905/programmes.aspx";
+                case "4000":
+                    gotoURL = "https://www.bbc.co.uk/schedules/p00fzl9p#on-now";
                     break;
-                case "1001":
-                    gotoURL = "http://www.radio913.com/shows";
+                case "4001":
+                    gotoURL = "http://www.moneyfm893.sg/programme-schedule/";
                     break;
-                case "1002":
-                    gotoURL = "http://kiss92.sg/shows.html";
+                case "4002":
+                    gotoURL = "https://radio.toggle.sg/en/gold-905-fm/shows";
                     break;
-                case "1003":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/symphony924/programmes.aspx";
+                case "4003":
+                    gotoURL = "https://onefm.sg/shows.html";
                     break;
-                case "1004":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/938live/programmes.aspx";
+                case "4004":
+                    gotoURL = "https://kiss92.sg/shows.html";
                     break;
-                case "1005":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/class95/programmes.aspx";
+                case "4005":
+                    gotoURL = "https://radio.toggle.sg/en/symphony-924-fm/programmes";
                     break;
-                case "1006":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/987fm/programmes.aspx";
+                case "4006":
+                    gotoURL = "https://radio.toggle.sg/en/938now/programmes";
                     break;
-                case "1007":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/lush995/on-air.aspx";
+                case "4007":
+                    gotoURL = "https://radio.toggle.sg/en/class-95-fm/programmes";
                     break;
-                case "1008":
-                    gotoURL = "http://973fm.webs.com/programmes.html";
+                case "4008":
+                    gotoURL = "https://www.power98.com.sg/shows/";
                     break;
-                case "1009":
-                    gotoURL = "http://theliveradio.sg/index.php?id=3";
+                case "4009":
+                    gotoURL = "https://radio.toggle.sg/en/987/shows";
                     break;
-                case "1010":
-                    gotoURL = "http://www.bbc.co.uk/worldserviceradio/programmes";
+                case "4010":
+                    gotoURL = "http://973fm.weebly.com/programmes.html";
                     break;
-                case "1011":
-                    gotoURL = "http://www.power98.com.sg/shows";
+                case "4011":
+                    gotoURL = "http://www.axr.online/pages/schedule/";
                     break;
-                case "2000":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/ria897/programmes.aspx";
+                case "4012":
+                    gotoURL = "http://www.biblewitness.com/webradio/programming/monday-friday.html";
                     break;
-                case "2001":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/yes933/programmes.aspx";
+                case "4013":
+                    gotoURL = "https://tunein.com/radio/HitzFM-Singapore-s178364/";
                     break;
-                case "2002":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/warna942/programmes.aspx";
+                case "4014":
+                    gotoURL = "http://www.orionstation.net/";
                     break;
-                case "2003":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/capital958/programmes.aspx";
+                case "5000":
+                    gotoURL = "https://www.883jia.com.sg/programme-lineup/";
                     break;
-                case "2004":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/xfm963/programmes.aspx";
+                case "5001":
+                    gotoURL = "https://radio.toggle.sg/en/yes-933-fm/shows";
                     break;
-                case "2005":
-                    gotoURL = "http://entertainment.xin.msn.com/en/radio/oli968/programmes.aspx";
+                case "5002":
+                    gotoURL = "https://radio.toggle.sg/en/capital-958-fm/shows";
                     break;
-                case "2006":
-                    gotoURL = "http://entertainment.xin.msn.com/zh/radio/love972/programmes.aspx";
+                case "5003":
+                    gotoURL = "http://www.fm963.sg/shows/";
                     break;
-                case "2007":
-                    gotoURL = "http://www.ufm1003.sg/shows";
+                case "5004":
+                    gotoURL = "https://radio.toggle.sg/en/love-972-fm/programmes";
                     break;
-                case "2008":
-                    gotoURL = "http://www.883jia.com.sg/shows/";
+                case "5005":
+                    gotoURL = "https://ufm1003.sg/shows.html";
+                    break;
+                case "5006":
+                    gotoURL = "https://radio.toggle.sg/en/ria-897-fm/programmes";
+                    break;
+                case "5007":
+                    gotoURL = "https://radio.toggle.sg/en/warna-942-fm/rancangan";
+                    break;
+                case "5008":
+                    gotoURL = "https://radio.toggle.sg/en/oli-968-fm/programmes";
+                    break;
+                case "5009":
+                    gotoURL = "http://www.rmelody.net/";
+                    break;
+                case "5010":
+                    gotoURL = "http://www.nagafm.com/program/";
+                    break;
+                case "5011":
+                    gotoURL = "https://www.facebook.com/desinetworks/";
+                    break;
+                case "5012":
+                    gotoURL = "https://www.facebook.com/desinetworks/";
                     break;
                 default:
                     gotoURL = "Unknown";
@@ -686,194 +722,144 @@ namespace SG_Radio_for_8._1
             string itemId;
             switch (name)
             {
-                case "Gold 90.5FM":
+                case "BBC World Service":
                     {
-                        itemId = "1000";
+                        itemId = "4000";
                         break;
                     }
-                case "HOT FM91.3":
+                case "Money FM 89.3":
                     {
-                        itemId = "1001";
+                        itemId = "4001";
+                        break;
+                    }
+                case "GOLD 90.5FM":
+                    {
+                        itemId = "4002";
+                        break;
+                    }
+                case "One FM 91.3":
+                    {
+                        itemId = "4003";
                         break;
                     }
                 case "Kiss 92FM":
                     {
-                        itemId = "1002";
+                        itemId = "4004";
                         break;
                     }
                 case "Symphony 92.4FM":
                     {
-                        itemId = "1003";
+                        itemId = "4005";
                         break;
                     }
-                case "938LIVE":
+                case "938Now":
                     {
-                        itemId = "1004";
+                        itemId = "4006";
                         break;
                     }
                 case "Class 95FM":
                     {
-                        itemId = "1005";
+                        itemId = "4007";
+                        break;
+                    }
+                case "Power 98FM":
+                    {
+                        itemId = "4008";
                         break;
                     }
                 case "987FM":
                     {
-                        itemId = "1006";
-                        break;
-                    }
-                case "Lush 99.5FM":
-                    {
-                        itemId = "1007";
+                        itemId = "4009";
                         break;
                     }
                 case "973FM":
                     {
-                        itemId = "1008";
+                        itemId = "4010";
                         break;
                     }
-                /*case "The Live Radio":
+                case "Asia Expat Radio":
                     {
-                        itemId = "1009";
-                        break;
-                    }*/
-                case "Power 98 FM":
-                    {
-                        itemId = "1011";
+                        itemId = "4011";
                         break;
                     }
-                case "Ria 89.7FM":
+                case "Bible Witness Web Radio":
                     {
-                        itemId = "2000";
+                        itemId = "4012";
+                        break;
+                    }
+                case "Hitz.fm":
+                    {
+                        itemId = "4013";
+                        break;
+                    }
+                case "Orion Station":
+                    {
+                        itemId = "4014";
+                        break;
+                    }
+                case "88.3Jia FM":
+                    {
+                        itemId = "5000";
                         break;
                     }
                 case "Y.E.S. 93.3FM":
                     {
-                        itemId = "2001";
+                        itemId = "5001";
                         break;
                     }
-                case "Warna 94.2FM":
+                case "Capital 95.8FM":
                     {
-                        itemId = "2002";
+                        itemId = "5002";
                         break;
                     }
-                case "Capital 95.8":
+                case "96.3 Hao FM":
                     {
-                        itemId = "2003";
-                        break;
-                    }
-                case "XFM 96.3":
-                    {
-                        itemId = "2004";
-                        break;
-                    }
-                case "Oli 96.8FM":
-                    {
-                        itemId = "2005";
+                        itemId = "5003";
                         break;
                     }
                 case "Love 97.2FM":
                     {
-                        itemId = "2006";
+                        itemId = "5004";
                         break;
                     }
                 case "UFM 1003":
                     {
-                        itemId = "2007";
+                        itemId = "5005";
                         break;
                     }
-                case "88.3 Jia FM":
+                case "Ria 89.7FM":
                     {
-                        itemId = "2008";
+                        itemId = "5006";
                         break;
                     }
-                case "90.5":
+                case "Warna 94.2FM":
                     {
-                        itemId = "1000";
+                        itemId = "5007";
                         break;
                     }
-                case "91.3":
+                case "Oli 96.8FM":
                     {
-                        itemId = "1001";
+                        itemId = "5008";
                         break;
                     }
-                case "92.0":
+                case "Radio Melody":
                     {
-                        itemId = "1002";
+                        itemId = "5009";
                         break;
                     }
-                case "92.4":
+                case "Naga FM":
                     {
-                        itemId = "1003";
+                        itemId = "5010";
                         break;
                     }
-                case "93.8":
+                case "DesiNetworks":
                     {
-                        itemId = "1004";
+                        itemId = "5011";
                         break;
                     }
-                case "95.0":
+                case "Desi Dance":
                     {
-                        itemId = "1005";
-                        break;
-                    }
-                case "98.7":
-                    {
-                        itemId = "1006";
-                        break;
-                    }
-                case "99.5":
-                    {
-                        itemId = "1007";
-                        break;
-                    }
-                case "97.3":
-                    {
-                        itemId = "1008";
-                        break;
-                    }
-                case "89.7":
-                    {
-                        itemId = "2000";
-                        break;
-                    }
-                case "93.3":
-                    {
-                        itemId = "2001";
-                        break;
-                    }
-                case "94.2":
-                    {
-                        itemId = "2002";
-                        break;
-                    }
-                case "95.8":
-                    {
-                        itemId = "2003";
-                        break;
-                    }
-                case "96.3":
-                    {
-                        itemId = "2004";
-                        break;
-                    }
-                case "96.8":
-                    {
-                        itemId = "2005";
-                        break;
-                    }
-                case "97.2":
-                    {
-                        itemId = "2006";
-                        break;
-                    }
-                case "100.3":
-                    {
-                        itemId = "2007";
-                        break;
-                    }
-                case "BBC World Service":
-                    {
-                        itemId = "1010";
+                        itemId = "5012";
                         break;
                     }
                 default:

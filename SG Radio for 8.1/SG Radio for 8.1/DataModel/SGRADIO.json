@@ -1,140 +1,187 @@
-{"Groups":[
-  {
-    "UniqueId": "Group-1",
-    "Title": "Group Title: 1",
-    "ImagePath": "Assets/DarkGray.png",
-	"JustAMessage": "Eew, why are you seeing this? Stop reverse engineering me! You make me a very sad pony :(",
-    "Items":
-    [
-      {
-        "UniqueId": "1000",
-        "Title": "Gold 90.5FM",
-        "ImagePath": "ms-appx:///Images/English/portal_1_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/905fm"
-      },
-      {
-        "UniqueId": "1001",
-        "Title": "HOT FM91.3",
-        "ImagePath": "ms-appx:///Images/English/portal_2_600_C.png",
-        "Content" : "http://sph.rastream.com/913fm"
-      },
-      {
-        "UniqueId": "1002",
-        "Title": "Kiss 92FM",
-        "ImagePath": "ms-appx:///Images/English/portal_3_600_C.png",
-        "Content" : "http://sph.rastream.com/sph-kiss92"
-      },
-      {
-        "UniqueId": "1003",
-        "Title": "Symphony 92.4FM",
-        "ImagePath": "ms-appx:///Images/English/portal_4_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/924fm"
-      },
-      {
-        "UniqueId": "1004",
-        "Title": "938LIVE",
-        "ImagePath": "ms-appx:///Images/English/portal_5_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/938fm"
-      },
-	        {
-        "UniqueId": "1005",
-        "Title": "Class 95FM",
-        "ImagePath": "ms-appx:///Images/English/portal_6_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/950fm"
-      },
-      {
-        "UniqueId": "1006",
-        "Title": "987FM",
-        "ImagePath": "ms-appx:///Images/English/portal_7_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/987fm"
-      },
-      {
-        "UniqueId": "1007",
-        "Title": "Lush 99.5FM",
-        "ImagePath": "ms-appx:///Images/English/portal_8_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/995fm"
-      },
-      {
-        "UniqueId": "1008",
-        "Title": "973FM",
-        "ImagePath": "ms-appx:///Images/English/portal_9_600_C.png",
-        "Content" : "http://209.105.250.73:8650/stream"
-      },
-	  {
-        "UniqueId": "1010",
-        "Title": "BBC World Service",
-        "ImagePath": "ms-appx:///Images/English/portal_11_600_C.png",
-        "Content" : "http://livewmstream-ws.bbc.co.uk.edgestreams.net/reflector:38972"
-      },
-	  {
-        "UniqueId": "1011",
-        "Title": "Power 98 FM",
-        "ImagePath": "ms-appx:///Images/English/portal_12_600_C.png",
-        "Content" : "http://streaming.clickhere2.com/power98.asx"
-      }
-    ]
-  },
-  {
-    "UniqueId": "Group-2",
-    "Title": "Group Title: 2",
-    "ImagePath": "Assets/DarkGray.png",
-    "Items":
-    [
-      {
-        "UniqueId": "2000",
-        "Title": "Ria 89.7FM",
-        "ImagePath": "ms-appx:///Images/Others/news_1_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/897fm"
-      },
-      {
-        "UniqueId": "2001",
-        "Title": "Y.E.S. 93.3FM",
-        "ImagePath": "ms-appx:///Images/Others/news_2_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/933fm"
-      },
-      {
-        "UniqueId": "2002",
-        "Title": "Warna 94.2FM",
-        "ImagePath": "ms-appx:///Images/Others/news_3_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/942fm"
-      },
-      {
-        "UniqueId": "2003",
-        "Title": "Capital 95.8",
-        "ImagePath": "ms-appx:///Images/Others/news_4_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/958fm"
-      },
-      {
-        "UniqueId": "2004",
-        "Title": "XFM 96.3",
-        "ImagePath": "ms-appx:///Images/Others/news_5_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/963fm"
-      },
-	        {
-        "UniqueId": "2005",
-        "Title": "Oli 96.8FM",
-        "ImagePath": "ms-appx:///Images/Others/news_6_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/968fm"
-      },
-      {
-        "UniqueId": "2006",
-        "Title": "Love 97.2FM",
-        "ImagePath": "ms-appx:///Images/Others/news_7_600_C.png",
-        "Content" : "http://mediacorp.rastream.com/972fm"
-      },
-      {
-        "UniqueId": "2007",
-        "Title": "UFM 1003",
-        "ImagePath": "ms-appx:///Images/Others/news_8_600_C.png",
-        "Content" : "http://sph.rastream.com/1003fm"
-      },
-	  {
-        "UniqueId": "2008",
-        "Title": "88.3 Jia FM",
-        "ImagePath": "ms-appx:///Images/Others/news_9_600_C.png",
-        "Content" : "http://streaming.clickhere2.com/883jia.asx"
-      }
-    ]
-  }
-]
+{
+  "Groups": [
+    {
+      "UniqueId": "Group-English",
+      "Title": "English",
+      "ImagePath": "Assets/DarkGray.png",
+      "JustAMessage": "Eew, why are you seeing this? Stop reverse engineering me! :(",
+      "Items": [
+        {
+          "UniqueId": "4000",
+          "Title": "BBC World Service",
+          "ImagePath": "ms-appx:///Images/English/English_01.png",
+          "Content": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"
+        },
+        {
+          "UniqueId": "4001",
+          "Title": "Money FM 89.3",
+          "ImagePath": "ms-appx:///Images/English/English_02.png",
+          "Content": "http://20673.live.streamtheworld.com/MONEY_893_SC"
+        },
+        {
+          "UniqueId": "4002",
+          "Title": "GOLD 90.5FM",
+          "ImagePath": "ms-appx:///Images/English/English_03.png",
+          "Content": "http://mediacorp.rastream.com/905fm"
+        },
+        {
+          "UniqueId": "4003",
+          "Title": "One FM 91.3",
+          "ImagePath": "ms-appx:///Images/English/English_04.png",
+          "Content": "http://sph.rastream.com/913fm"
+        },
+        {
+          "UniqueId": "4004",
+          "Title": "Kiss 92FM",
+          "ImagePath": "ms-appx:///Images/English/English_05.png",
+          "Content": "http://sph.rastream.com/sph-kiss92"
+        },
+        {
+          "UniqueId": "4005",
+          "Title": "Symphony 92.4FM",
+          "ImagePath": "ms-appx:///Images/English/English_06.png",
+          "Content": "http://mediacorp.rastream.com/924fm"
+        },
+        {
+          "UniqueId": "4006",
+          "Title": "938Now",
+          "ImagePath": "ms-appx:///Images/English/English_07.png",
+          "Content": "http://mediacorp.rastream.com/938fm"
+        },
+        {
+          "UniqueId": "4007",
+          "Title": "Class 95FM",
+          "ImagePath": "ms-appx:///Images/English/English_08.png",
+          "Content": "http://mediacorp.rastream.com/950fm"
+        },
+        {
+          "UniqueId": "4008",
+          "Title": "Power 98FM",
+          "ImagePath": "ms-appx:///Images/English/English_09.png",
+          "Content": "http://18583.live.streamtheworld.com/POWER98.mp3"
+        },
+        {
+          "UniqueId": "4009",
+          "Title": "987FM",
+          "ImagePath": "ms-appx:///Images/English/English_10.png",
+          "Content": "http://mediacorp.rastream.com/987fm"
+        },
+        {
+          "UniqueId": "4010",
+          "Title": "973FM",
+          "ImagePath": "ms-appx:///Images/English/English_11.png",
+          "Content": "http://icecasthost.heropiggy95.xyz:8650/stream"
+        },
+        {
+          "UniqueId": "4011",
+          "Title": "Asia Expat Radio",
+          "ImagePath": "ms-appx:///Images/English/English_12.png",
+          "Content": "http://axr.rastream.com/axr-singapore"
+        },
+        {
+          "UniqueId": "4012",
+          "Title": "Bible Witness Web Radio",
+          "ImagePath": "ms-appx:///Images/English/English_13.png",
+          "Content": "http://biblewitness.com:8000/;stream.nsv"
+        },
+        {
+          "UniqueId": "4013",
+          "Title": "Hitz.fm",
+          "ImagePath": "ms-appx:///Images/English/English_14.png",
+          "Content": "http://38.107.243.226:8920/;stream.nsv"
+        },
+        {
+          "UniqueId": "4014",
+          "Title": "Orion Station",
+          "ImagePath": "ms-appx:///Images/English/English_15.png",
+          "Content": "http://188.165.192.5:8528/stream/"
+        }
+      ]
+    },
+    {
+      "UniqueId": "Group-Others",
+      "Title": "Others",
+      "ImagePath": "Assets/DarkGray.png",
+      "Items": [
+        {
+          "UniqueId": "5000",
+          "Title": "88.3Jia FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_01.png",
+          "Content": "http://19053.live.streamtheworld.com/883JIA_SC"
+        },
+        {
+          "UniqueId": "5001",
+          "Title": "Y.E.S. 93.3FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_02.png",
+          "Content": "http://mediacorp.rastream.com/933fm"
+        },
+        {
+          "UniqueId": "5002",
+          "Title": "Capital 95.8FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_03.png",
+          "Content": "http://mediacorp.rastream.com/958fm"
+        },
+        {
+          "UniqueId": "5003",
+          "Title": "96.3 Hao FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_04.png",
+          "Content": "http://20673.live.streamtheworld.com/HAO_963_SC"
+        },
+        {
+          "UniqueId": "5004",
+          "Title": "Love 97.2FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_05.png",
+          "Content": "http://mediacorp.rastream.com/972fm"
+        },
+        {
+          "UniqueId": "5005",
+          "Title": "UFM 1003",
+          "ImagePath": "ms-appx:///Images/Others/Others_06.png",
+          "Content": "http://sph.rastream.com/1003fm"
+        },
+        {
+          "UniqueId": "5006",
+          "Title": "Ria 89.7FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_07.png",
+          "Content": "http://mediacorp.rastream.com/897fm"
+        },
+        {
+          "UniqueId": "5007",
+          "Title": "Warna 94.2FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_08.png",
+          "Content": "http://mediacorp.rastream.com/942fm"
+        },
+        {
+          "UniqueId": "5008",
+          "Title": "Oli 96.8FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_09.png",
+          "Content": "http://mediacorp.rastream.com/968fm"
+        },
+        {
+          "UniqueId": "5009",
+          "Title": "Radio Melody",
+          "ImagePath": "ms-appx:///Images/Others/Others_10.png",
+          "Content": "http://37.59.28.208:8113/stream"
+        },
+        {
+          "UniqueId": "5010",
+          "Title": "Naga FM",
+          "ImagePath": "ms-appx:///Images/Others/Others_11.png",
+          "Content": "http://songs.nagafm.com:8006/stream/1/"
+        },
+        {
+          "UniqueId": "5011",
+          "Title": "DesiNetworks",
+          "ImagePath": "ms-appx:///Images/Others/Others_12.png",
+          "Content": "http://192.99.8.192:3224/;stream.nsv"
+        },
+        {
+          "UniqueId": "5012",
+          "Title": "Desi Dance",
+          "ImagePath": "ms-appx:///Images/Others/Others_13.png",
+          "Content": "http://usa6.fastcast4u.com:5029/stream"
+        }
+      ]
+    }
+  ]
 }

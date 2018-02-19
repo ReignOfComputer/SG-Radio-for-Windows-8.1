@@ -1,27 +1,13 @@
-﻿/*
- * 	  {
-        "UniqueId": "1009",
-        "Title": "The Live Radio",
-        "ImagePath": "ms-appx:///Images/English/portal_10_600_C.png",
-        "Content" : "http://s3.viastreaming.net:8530/"
-      },
- */
-
-using SG_Radio_for_8._1.Common;
+﻿using SG_Radio_for_8._1.Common;
 using SG_Radio_for_8._1.Data;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
+using System.Reflection;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Data.Json;
 using Windows.Data.Xml.Dom;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media;
 using Windows.Storage;
 using Windows.Storage.Streams;
@@ -32,47 +18,57 @@ using Windows.UI.StartScreen;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using System.Reflection;
+using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 using NotificationsExtensions.TileContent;
-using Windows.ApplicationModel.Background;
-using SM.Media.Playlists;
-using SM.Media.Web;
-using SM.Media;
-using SM.Media.Segments;
-using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace SG_Radio_for_8._1
 {
     public sealed partial class HubPage : Page
     {
+        #region Declarations
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        string playingId;
-        string globalId;
-        string holdThisSource;
-        string playingImg;
-        string selectedFav, selectedTime, selectedImage;
+        private string playingId;
+        private string globalId;
+        private string holdThisSource;
+        private string playingImg;
+        private string selectedFav, selectedTime, selectedImage;
         public static string startArgument;
         private bool appBarSelected = false;
         private int countdown;
         private DispatcherTimer anitimer;
-        ItemClickEventArgs itemClick;
-        DispatcherTimer timer = new DispatcherTimer();
-        DispatcherTimer timerStandby = new DispatcherTimer();
-        DispatcherTimer timerShutdown = new DispatcherTimer();
-        IAsyncOperation<IUICommand> asyncCommand;
-        SystemMediaTransportControls systemControls;
-        readonly IHttpClients _httpClients;
-        WinRtMediaStreamSource _tsMediaStreamSource;
-        PlaylistSegmentManager _playlist;
-        IMediaElementManager _mediaElementManager;
-        ITsMediaManager _tsMediaManager;
+        private ItemClickEventArgs itemClick;
+        private DispatcherTimer timer = new DispatcherTimer();
+        private DispatcherTimer timerStandby = new DispatcherTimer();
+        private DispatcherTimer timerShutdown = new DispatcherTimer();
+        private IAsyncOperation<IUICommand> asyncCommand;
+        private SystemMediaTransportControls systemControls;
 
+        private int stationType = 0; // 0 = Mediacorp, 1 = SPH, 2 = BBC, 3 = So Drama, 4 = Others
+
+        // Mediacorp
+        private readonly string[] station0 = { "4002", "4005", "4006", "4007", "4009", "5001", "5002", "5004", "5006", "5007", "5008" };
+
+        // SPH
+        private readonly string[] station1 = { "4001", "4003", "4004", "5003", "5005" };
+
+        // BBC
+        private readonly string[] station2 = { "4000" };
+
+        // So Drama
+        private readonly string[] station3 = { "4008", "5000" };
+
+        // Others
+        private readonly string[] station4 = { "4010", "4011", "4012", "4013", "4014", "5009", "5010", "5011", "5012" };
+        #endregion
+
+        #region Page Setup
         public NavigationHelper NavigationHelper
         {
             get { return this.navigationHelper; }
@@ -105,7 +101,6 @@ namespace SG_Radio_for_8._1
             initializeStarredHub();
             checkForFirstRun();
             startMusic();
-            _httpClients = new HttpClients(userAgent: new ProductInfoHeaderValue("Unknown", "0.0"));
 
             this.Loaded += HubPage_Loaded;
         }
@@ -118,10 +113,15 @@ namespace SG_Radio_for_8._1
             anitimer.Start();
         }
 
+        private void settings_Click(object sender, RoutedEventArgs e)
+        {
+            Windows.UI.ApplicationSettings.SettingsPane.Show();
+        }
+
         void anitimer_Tick(object sender, object e)
         {
             ellipsisMove.Begin();
-            EllipsisGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            EllipsisGrid.Visibility = Visibility.Visible;
             ellipsisMove2.Begin();
             anitimer.Stop();
         }
@@ -132,27 +132,27 @@ namespace SG_Radio_for_8._1
             SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.Type = MediaPlaybackType.Music;
             if (SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.MusicProperties.Title != "")
             {
-                input = @"I'm listening to " + SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.MusicProperties.Title + " on " + SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.MusicProperties.Artist + " using SG Radio! <br>http://apps.microsoft.com/webpdp/app/sg-radio/81dd2ed1-8b0a-4017-a6d8-cb7b28837c2a";
+                input = @"I'm listening to " + SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.MusicProperties.Title + " on " + SystemMediaTransportControls.GetForCurrentView().DisplayUpdater.MusicProperties.Artist + " using SG Radio! <br>https://apps.microsoft.com/webpdp/app/sg-radio/81dd2ed1-8b0a-4017-a6d8-cb7b28837c2a";
             }
             else
             {
-                input = @"I'm listening to Singapore's Radio Stations using SG Radio! <br>http://apps.microsoft.com/webpdp/app/sg-radio/81dd2ed1-8b0a-4017-a6d8-cb7b28837c2a";
+                input = @"I'm listening to Singapore's Radio Stations using SG Radio! <br>https://apps.microsoft.com/webpdp/app/sg-radio/81dd2ed1-8b0a-4017-a6d8-cb7b28837c2a";
             }
 
             DataRequest request = args.Request;
 
-            request.Data.Properties.Title = "SG Radio for Windows 8";
+            request.Data.Properties.Title = "SG Radio for Windows Store";
             request.Data.Properties.Description = string.Format(input);
 
-            var formatted = Windows.ApplicationModel.DataTransfer.HtmlFormatHelper.CreateHtmlFormat(input);
+            var formatted = HtmlFormatHelper.CreateHtmlFormat(input);
             request.Data.SetHtmlFormat(formatted);
         }
 
         private void checkForFirstRun()
         {
-            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRun81R6"))
+            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRunV4000"))
             {
-                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- FIXED: Pesky stations. Fixed Kiss 92 stream migration", "SG Radio Update: v3.4.0.5");
+                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!\n- FIXED: All the streams that have been migrated\n- FIXED: All the rebranding for the stations\n- ADDED: Various new stations\n- ADDED: Settings Charms button in AppBar for Windows 10 users\n- CHANGED: Optimized how streaming works, much less lag now\n- CHANGED: Song name now appears before the artist instead of the other way around\n- CHANGED: Current playing station and track are now neatly centered\n- CHANGED: Removed redundant Refresh button\n- WARNING: All favorites and pinned tiles need to be reset after this major update", "SG Radio Update: v4.0.0.0");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
@@ -173,19 +173,19 @@ namespace SG_Radio_for_8._1
 
                 asyncCommand = messageDialog.ShowAsync();
 
-                ApplicationData.Current.RoamingSettings.Values["FirstRun81R6"] = true;
+                ApplicationData.Current.RoamingSettings.Values["FirstRunV4000"] = true;
             }
         }
 
         private async void sendEmail()
         {
-            await Launcher.LaunchUriAsync(new Uri("mailto://roc@reignofcomputer.com?subject=SG Radio for Windows 8.1", UriKind.Absolute));
+            await Launcher.LaunchUriAsync(new Uri("mailto://roc@reignofcomputer.com?subject=SG Radio for Windows Store", UriKind.Absolute));
         }
 
         private async void rateApp()
         {
             var storeURI = new Uri("ms-windows-store:PDP?PFN=20694ReignOfComputer.SGRadio_whkbyfjgnjkag");
-            await Windows.System.Launcher.LaunchUriAsync(storeURI);
+            await Launcher.LaunchUriAsync(storeURI);
         }
 
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
@@ -232,22 +232,6 @@ namespace SG_Radio_for_8._1
             FavHub.DataContext = dataList;
         }
 
-        private void startStandby()
-        {
-            BottomAppBar.IsOpen = false;
-            BottomAppBar.IsEnabled = false;
-            timerStandby.Interval = TimeSpan.FromSeconds(1);
-            timerStandby.Tick += standby_Tick;
-            timerStandby.Start();
-        }
-
-        private void standby_Tick(object sender, object e)
-        {
-            standbyTime.Text = DateTime.Now.ToString("hh:mm tt");
-            standbyStation.Text = currStation.Text;
-            standbyTrack.Text = currTrack.Text;
-        }
-
         private void SetLiveTile()
         {
             string TileName = playingId;
@@ -270,7 +254,7 @@ namespace SG_Radio_for_8._1
             {
                 if (SecondaryTile.Exists(TileName))
                 {
-                    TileUpdater updater = Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile(TileName);
+                    TileUpdater updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(TileName);
                     updater.EnableNotificationQueue(false);
                     updater.Clear();
 
@@ -289,29 +273,18 @@ namespace SG_Radio_for_8._1
 
                 XmlDocument tileXml = new XmlDocument();
                 tileXml.LoadXml(LiveTile);
-                var tileNotification = new Windows.UI.Notifications.TileNotification(tileXml);
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+                var tileNotification = new TileNotification(tileXml);
+                TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+                TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
             }
             catch (Exception)
             {
             }
         }
 
-        async void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             mediaElement1.Stop();
-
-            if (null != _tsMediaManager)
-                _tsMediaManager.Close();
-
-            if (null != _playlist)
-            {
-                var t = _playlist.StopAsync();
-            }
-
-            if (null != _mediaElementManager)
-                await _mediaElementManager.CloseAsync();
 
             itemClick = e;
             progressring.IsActive = true;
@@ -319,15 +292,17 @@ namespace SG_Radio_for_8._1
             var itemName = ((SGRADIODataItem)e.ClickedItem).Title;
             var itemImage = ((SGRADIODataItem)e.ClickedItem).ImagePath;
             var itemContent = ((SGRADIODataItem)e.ClickedItem).Content;
-            if (itemId == "1011")
-            {
-                playSafra(0);
-                return;
-            }
-            if (itemId == "2008")
-            {
-                playSafra(1);
-            }
+
+            if (station0.Contains(itemId))
+                stationType = 0;
+            else if (station1.Contains(itemId))
+                stationType = 1;
+            else if (station2.Contains(itemId))
+                stationType = 2;
+            else if (station3.Contains(itemId))
+                stationType = 3;
+            else
+                stationType = 4;
 
             globalId = itemId;
             playingId = itemId;
@@ -339,136 +314,16 @@ namespace SG_Radio_for_8._1
             updater.MusicProperties.Artist = "SG Radio - " + itemName;
             updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(itemImage, UriKind.Absolute));
             updater.Update();
-            efrTick(0);
+            efrTick(1, 0);
             efrTicker();
             mediaElement1.Play();
             systemControls.PlaybackStatus = MediaPlaybackStatus.Playing;
             toggleAppBar(true);
         }
 
-        private async void playSafra(int station)
-        {
-            string stationName = "";
-            string stationPlaylist = "";
-
-            if (station == 0)
-            {
-                stationName = "Power 98 FM";
-                stationPlaylist = "power98";
-                globalId = "1011";
-                playingId = "1011";
-                playingImg = "ms-appx:///Images/English/portal_12_600_C.png";
-                holdThisSource = "safra1";
-            }
-            else
-            {
-                stationName = "88.3 Jia FM";
-                stationPlaylist = "883jia";
-                globalId = "2008";
-                playingId = "2008";
-                playingImg = "ms-appx:///Images/English/portal_9_600_C.png";
-                holdThisSource = "safra2";
-            }
-
-            SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-            updater.Type = MediaPlaybackType.Music;
-            updater.MusicProperties.Artist = "SG Radio - " + stationName;
-            updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(playingImg, UriKind.Absolute));
-            updater.Update();
-            efrTick(0);
-            efrTicker();
-            systemControls.PlaybackStatus = MediaPlaybackStatus.Playing;
-            toggleAppBar(true);
-
-            if (null != _playlist)
-            {
-                _playlist.Dispose();
-                _playlist = null;
-            }
-
-            if (null != _tsMediaStreamSource)
-            {
-                _tsMediaStreamSource.Dispose();
-                _tsMediaStreamSource = null;
-            }
-
-            var segmentsFactory = new SegmentsFactory(_httpClients);
-
-            var programManager = new ProgramManager(_httpClients, segmentsFactory.CreateStreamSegments)
-            {
-                Playlists = new[]
-                                                 {
-                                                     new Uri("http://ms1.clickhere2.com/live/" + stationPlaylist + "/playlist.m3u8")
-                                                 }
-            };
-
-            SM.Media.Playlists.Program program;
-            ISubProgram subProgram;
-
-            try
-            {
-                var programs = await programManager.LoadAsync();
-
-                program = programs.Values.FirstOrDefault();
-
-                if (null == program)
-                {
-                    return;
-                }
-
-                subProgram = program.SubPrograms.OrderByDescending(sp => sp.Bandwidth).FirstOrDefault();
-
-                if (null == subProgram)
-                {
-                    return;
-                }
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            var programClient = _httpClients.CreatePlaylistClient(program.Url);
-
-            _playlist = new PlaylistSegmentManager(uri => new CachedWebRequest(uri, programClient), subProgram, segmentsFactory.CreateStreamSegments);
-
-            _mediaElementManager = new MediaElementManager(Dispatcher,
-                () =>
-                {
-                    var me = mediaElement1;
-
-                    return me;
-                },
-                me =>
-                {
-                });
-
-            var segmentReaderManager = new SegmentReaderManager(new[] { _playlist }, _httpClients.CreateSegmentClient);
-
-            _tsMediaStreamSource = new WinRtMediaStreamSource();
-
-            _tsMediaManager = new TsMediaManager(segmentReaderManager, _mediaElementManager, _tsMediaStreamSource);
-
-            _tsMediaManager.Play();
-
-            progressring.IsActive = false;
-            statusGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-        }
-
-        private async void ItemView_ItemClickFav(object sender, ItemClickEventArgs e)
+        private void ItemView_ItemClickFav(object sender, ItemClickEventArgs e)
         {
             mediaElement1.Stop();
-
-            if (null != _tsMediaManager)
-                _tsMediaManager.Close();
-
-            if (null != _playlist)
-            {
-                var t = _playlist.StopAsync();
-            }
-
-            if (null != _mediaElementManager)
-                await _mediaElementManager.CloseAsync();
 
             var itemName = ((FavData)e.ClickedItem).FavTitle;
             if (itemName == "No Favourites")
@@ -481,15 +336,16 @@ namespace SG_Radio_for_8._1
             var itemImage = ((FavData)e.ClickedItem).FavImage;
             var itemContent = Constants.getStream(itemId);
 
-            if (itemId == "1011")
-            {
-                playSafra(0);
-                return;
-            }
-            if (itemId == "2008")
-            {
-                playSafra(1);
-            }
+            if (station0.Contains(itemId))
+                stationType = 0;
+            else if (station1.Contains(itemId))
+                stationType = 1;
+            else if (station2.Contains(itemId))
+                stationType = 2;
+            else if (station3.Contains(itemId))
+                stationType = 3;
+            else
+                stationType = 4;
 
             globalId = itemId;
             playingId = itemId;
@@ -501,14 +357,82 @@ namespace SG_Radio_for_8._1
             updater.MusicProperties.Artist = "SG Radio - " + itemName;
             updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(itemImage, UriKind.Absolute));
             updater.Update();
-            efrTick(0);
+            efrTick(1, 0);
             efrTicker();
             mediaElement1.Play();
             systemControls.PlaybackStatus = MediaPlaybackStatus.Playing;
             toggleAppBar(true);
         }
+        #endregion
 
-        private async void startMusic()
+        #region Standby
+        private void startStandby()
+        {
+            BottomAppBar.IsOpen = false;
+            BottomAppBar.IsEnabled = false;
+            timerStandby.Interval = TimeSpan.FromSeconds(1);
+            timerStandby.Tick += standby_Tick;
+            timerStandby.Start();
+        }
+
+        private void standby_Tick(object sender, object e)
+        {
+            standbyTime.Text = DateTime.Now.ToString("hh:mm tt");
+            standbyStation.Text = currStation.Text;
+            standbyTrack.Text = currTrack.Text;
+        }
+
+        private void standbyClose(object sender, RoutedEventArgs e)
+        {
+            standbyGrid.Visibility = Visibility.Collapsed;
+            BottomAppBar.IsEnabled = true;
+            timerStandby.Stop();
+        }
+
+        public SolidColorBrush ColorStringToBrush(string name)
+        {
+            var property = typeof(Colors).GetRuntimeProperty(name);
+            if (property != null)
+            {
+                return new SolidColorBrush((Color)property.GetValue(null));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void standbyView_Click(object sender, RoutedEventArgs e)
+        {
+            startStandby();
+
+            if (ApplicationData.Current.RoamingSettings.Values.ContainsKey("bgColor"))
+            {
+                standbyGrid.Background = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["bgColor"].ToString());
+
+                if (ApplicationData.Current.RoamingSettings.Values["bgColor"].ToString() == "White")
+                {
+                    backButton.RequestedTheme = ElementTheme.Light;
+                }
+                else
+                {
+                    backButton.RequestedTheme = ElementTheme.Dark;
+                }
+            }
+
+            if (ApplicationData.Current.RoamingSettings.Values.ContainsKey("txtColor"))
+            {
+                standbyTime.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
+                standbyStation.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
+                standbyTrack.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
+            }
+
+            standbyGrid.Visibility = Visibility.Visible;
+        }
+        #endregion
+
+        #region Media Control
+        private void startMusic()
         {
             if (startArgument == "")
             {
@@ -516,17 +440,6 @@ namespace SG_Radio_for_8._1
             }
 
             mediaElement1.Stop();
-
-            if (null != _tsMediaManager)
-                _tsMediaManager.Close();
-
-            if (null != _playlist)
-            {
-                var t = _playlist.StopAsync();
-            }
-
-            if (null != _mediaElementManager)
-                await _mediaElementManager.CloseAsync();
 
             progressring.IsActive = true;
             var itemName = Constants.getName(startArgument);
@@ -538,15 +451,16 @@ namespace SG_Radio_for_8._1
             playingId = itemId;
             playingImg = itemImage;
 
-            if (itemId == "1011")
-            {
-                playSafra(0);
-                return;
-            }
-            if (itemId == "2008")
-            {
-                playSafra(1);
-            }
+            if (station0.Contains(itemId))
+                stationType = 0;
+            else if (station1.Contains(itemId))
+                stationType = 1;
+            else if (station2.Contains(itemId))
+                stationType = 2;
+            else if (station3.Contains(itemId))
+                stationType = 3;
+            else
+                stationType = 4;
 
             mediaElement1.Source = new Uri(itemContent, UriKind.Absolute);
             holdThisSource = @Constants.getStream(startArgument);
@@ -555,14 +469,13 @@ namespace SG_Radio_for_8._1
             updater.MusicProperties.Artist = "SG Radio - " + itemName;
             updater.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(itemImage, UriKind.Absolute));
             updater.Update();
-            efrTick(0);
+            efrTick(1, 0);
             efrTicker();
             mediaElement1.Play();
             systemControls.PlaybackStatus = MediaPlaybackStatus.Playing;
             toggleAppBar(true);
         }
 
-        #region MediaControl
         async void SystemControls_ButtonPressed(SystemMediaTransportControls sender,
     SystemMediaTransportControlsButtonPressedEventArgs args)
         {
@@ -598,7 +511,7 @@ namespace SG_Radio_for_8._1
         private void mediaElement1_MediaOpened_1(object sender, RoutedEventArgs e)
         {
             progressring.IsActive = false;
-            statusGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            statusGrid.Visibility = Visibility.Visible;
         }
 
         private void mediaElement1_MediaEnded_1(object sender, RoutedEventArgs e)
@@ -624,112 +537,27 @@ namespace SG_Radio_for_8._1
             asyncCommand = messageDialog.ShowAsync();
         }
 
+        private readonly string[] titleId = { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011", "4012", "4013", "4014",
+            "5000", "5001", "5002", "5003", "5004", "5005", "5006", "5007", "5008", "5009", "5010", "5011", "5012" };
+
         private async void completeClosure()
         {
-            if (null != _tsMediaManager)
-                _tsMediaManager.Close();
-
-            if (null != _playlist)
-            {
-                var t = _playlist.StopAsync();
-            }
-
-            if (null != _mediaElementManager)
-                await _mediaElementManager.CloseAsync();
-
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 mediaElement1.Stop();
                 mediaElement1.Source = null;
                 progressring.IsActive = false;
-                statusGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                statusGrid.Visibility = Visibility.Collapsed;
                 toggleAppBar(false);
-                Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+                TileUpdateManager.CreateTileUpdaterForApplication().Clear();
                 timer.Stop();
 
-                if (SecondaryTile.Exists("1000"))
+                foreach (string titleId in titleId)
                 {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1000").Clear();
-                }
-                if (SecondaryTile.Exists("1001"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1001").Clear();
-                }
-                if (SecondaryTile.Exists("1002"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1002").Clear();
-                }
-                if (SecondaryTile.Exists("1003"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1003").Clear();
-                }
-                if (SecondaryTile.Exists("1004"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1004").Clear();
-                }
-                if (SecondaryTile.Exists("1005"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1005").Clear();
-                }
-                if (SecondaryTile.Exists("1006"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1006").Clear();
-                }
-                if (SecondaryTile.Exists("1007"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1007").Clear();
-                }
-                if (SecondaryTile.Exists("1008"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1008").Clear();
-                }
-                if (SecondaryTile.Exists("1009"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1009").Clear();
-                }
-                if (SecondaryTile.Exists("1010"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1010").Clear();
-                }
-                if (SecondaryTile.Exists("1011"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("1011").Clear();
-                }
-                if (SecondaryTile.Exists("2000"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2000").Clear();
-                }
-                if (SecondaryTile.Exists("2001"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2001").Clear();
-                }
-                if (SecondaryTile.Exists("2002"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2002").Clear();
-                }
-                if (SecondaryTile.Exists("2003"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2003").Clear();
-                }
-                if (SecondaryTile.Exists("2004"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2004").Clear();
-                }
-                if (SecondaryTile.Exists("2005"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2005").Clear();
-                }
-                if (SecondaryTile.Exists("2006"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2006").Clear();
-                }
-                if (SecondaryTile.Exists("2007"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2007").Clear();
-                }
-                if (SecondaryTile.Exists("2008"))
-                {
-                    Windows.UI.Notifications.TileUpdateManager.CreateTileUpdaterForSecondaryTile("2008").Clear();
+                    if (SecondaryTile.Exists(titleId))
+                    {
+                        TileUpdateManager.CreateTileUpdaterForSecondaryTile(titleId).Clear();
+                    }
                 }
 
                 systemControls.PlaybackStatus = MediaPlaybackStatus.Stopped;
@@ -738,17 +566,6 @@ namespace SG_Radio_for_8._1
 
         private async void restartSource()
         {
-            if (holdThisSource == "safra1")
-            {
-                playSafra(0);
-                return;
-            }
-            else if (holdThisSource == "safra2")
-            {
-                playSafra(1);
-                return;
-            }
-
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 mediaElement1.Source = new Uri(holdThisSource, UriKind.Absolute);
@@ -759,220 +576,117 @@ namespace SG_Radio_for_8._1
                 systemControls.PlaybackStatus = MediaPlaybackStatus.Playing;
             });
         }
+
+        private void VolumeChangedEvent(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            mediaElement1.Volume = sliderVolume.Value / 100;
+        }
         #endregion
 
-        #region TitleFetch
-        private void efrFetch(int appbarMode)
+        #region Title Fetch
+        private void efrTick(int type, int appbarMode)
         {
+            int efrTickStationType = 0;
+
             if (appbarMode == 0)
+                efrTickStationType = stationType;
+            else
             {
-                if (playingId == "1001" || playingId == "1002" || playingId == "2007")
-                {
-                    sphTitle(0, 0);
-                }
-
-                else if (playingId == "1008")
-                {
-                    fm973Title(0, 0);
-                }
-
-                else if (playingId == "1009")
-                {
-                    tlrTitle(0, 0);
-                }
-
-                else if (playingId == "1010")
-                {
-                    bbcTitle(0, 0);
-                }
-
-                else if (playingId == "1011")
-                {
-                    p98Title(0, 0);
-                }
-
-                else if (playingId == "2008")
-                {
-                    jiaTitle(0, 0);
-                }
-
+                if (station0.Contains(globalId))
+                    efrTickStationType = 0;
+                else if (station1.Contains(globalId))
+                    efrTickStationType = 1;
+                else if (station2.Contains(globalId))
+                    efrTickStationType = 2;
+                else if (station3.Contains(globalId))
+                    efrTickStationType = 3;
                 else
-                {
-                    mediacorpTitle(0, 0);
-                }
+                    efrTickStationType = 4;
             }
-            else if (appbarMode == 1)
-            {
-                if (globalId == "1001" || globalId == "1002" || globalId == "2007")
-                {
-                    sphTitle(0, 1);
-                }
 
-                else if (globalId == "1008")
-                {
-                    fm973Title(0, 1);
-                }
-
-                else if (globalId == "1009")
-                {
-                    tlrTitle(0, 1);
-                }
-
-                else if (globalId == "1010")
-                {
-                    bbcTitle(0, 1);
-                }
-
-                else if (globalId == "1011")
-                {
-                    p98Title(0, 0);
-                }
-
-                else if (globalId == "2008")
-                {
-                    jiaTitle(0, 0);
-                }
-
-                else
-                {
-                    mediacorpTitle(0, 1);
-                }
-            }
-        }
-
-        private void efrTick(int appbarMode)
-        {
-            if (appbarMode == 0)
-            {
-                if (playingId == "1001" || playingId == "1002" || playingId == "2007")
-                {
-                    sphTitle(1, 0);
-                }
-
-                else if (playingId == "1008")
-                {
-                    fm973Title(1, 0);
-                }
-
-                else if (playingId == "1009")
-                {
-                    tlrTitle(1, 0);
-                }
-
-                else if (playingId == "1010")
-                {
-                    bbcTitle(1, 0);
-                }
-
-                else if (playingId == "1011")
-                {
-                    p98Title(1, 0);
-                }
-
-                else if (playingId == "2008")
-                {
-                    jiaTitle(1, 0);
-                }
-
-                else
-                {
-                    mediacorpTitle(1, 0);
-                }
-            }
-            else if (appbarMode == 1)
-            {
-                if (globalId == "1001" || globalId == "1002" || globalId == "2007")
-                {
-                    sphTitle(1, 1);
-                }
-
-                else if (globalId == "1008")
-                {
-                    fm973Title(1, 1);
-                }
-
-                else if (globalId == "1009")
-                {
-                    tlrTitle(1, 1);
-                }
-
-                else if (globalId == "1010")
-                {
-                    bbcTitle(1, 1);
-                }
-
-                else if (globalId == "1011")
-                {
-                    p98Title(1, 1);
-                }
-
-                else if (globalId == "2008")
-                {
-                    jiaTitle(1, 1);
-                }
-
-                else
-                {
-                    mediacorpTitle(1, 1);
-                }
-            }
+            if (efrTickStationType == 0)
+                mediacorpTitle(type, appbarMode);
+            else if (efrTickStationType == 1)
+                sphTitle(type, appbarMode);
+            else if (efrTickStationType == 2)
+                bbcTitle(type, appbarMode);
+            else if (efrTickStationType == 3)
+                soDramaTitle(type, appbarMode);
+            else
+                othersTitle(type, appbarMode);
         }
 
         void efrTicker()
         {
             timer.Tick += (s, o) =>
             {
-                efrTick(0);
+                efrTick(1, 0);
             };
             timer.Interval = new TimeSpan(0, 0, 30);
             bool enabled = timer.IsEnabled;
             timer.Start();
         }
 
-        private async void p98Title(int type, int appbarMode)
+        private async void mediacorpTitle(int type, int appbarMode)
         {
-            var uri = new Uri("http://www.power98.com.sg/songfeed/nowplaying.php");
+            var uri = new Uri("http://liveradio.toggle.sg/api/playouthistory?stationId=905fm");
             var client = new HttpClient();
+            string finalId = "4000";
+            if (appbarMode == 0)
+            {
+                uri = new Uri(Constants.getTitle(playingId));
+                finalId = playingId;
+            }
+
+            else if (appbarMode == 1)
+            {
+                uri = new Uri(Constants.getTitle(globalId));
+                finalId = globalId;
+            }
+
             string response = "";
+            var rootArtist = "";
+            var rootTrack = "";
 
             try
             {
                 response = await client.GetStringAsync(uri);
+                List<PlayListItem> playList = JsonConvert.DeserializeObject<List<PlayListItem>>(response);
+
+                PlayListItem firstItem = playList.First();
+                rootTrack = firstItem.Song.Track;
+                rootArtist = firstItem.Song.Artist;
             }
             catch (Exception)
             {
-                return;
+                rootArtist = "Not Available";
             }
-
-            JsonObject parser = JsonObject.Parse(response);
-            var rootArtist = parser.GetNamedString("artist");
-            var rootTrack = parser.GetNamedString("song");
 
             if (appbarMode == 0)
             {
                 SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                updater.MusicProperties.Title = rootArtist + " - " + rootTrack;
+                updater.MusicProperties.Title = rootTrack + " - " + rootArtist;
                 updater.Update();
             }
 
             if (type == 0)
             {
-                var messageDialog = new MessageDialog(rootArtist + " - " + rootTrack, "SG Radio - Power 98 FM: Now Playing");
+                var messageDialog = new MessageDialog(rootTrack + " - " + rootArtist, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
                 messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
                 {
                     DataPackage package = new DataPackage();
-                    package.SetText(rootArtist + " - " + rootTrack);
+                    package.SetText(rootTrack + " - " + rootArtist);
                     Clipboard.SetContent(package);
                 }));
                 messageDialog.Commands.Add(new UICommand("Star", (command) =>
                 {
                     App.Insert_StarredItem((new StarredDataSQL()
                     {
-                        StarredTitle = rootArtist + " - " + rootTrack,
-                        StarredImage = Constants.getImage("1011"),
+                        StarredTitle = rootTrack + " - " + rootArtist,
+                        StarredImage = Constants.getImage(finalId),
                         StarredTime = DateTime.Now.ToString()
                     }));
                     initializeStarredHub();
@@ -987,58 +701,109 @@ namespace SG_Radio_for_8._1
             }
             else if (type == 1)
             {
-                currStation.Text = "Current Station: Power 98 FM";
-                currTrack.Text = "Current Track: " + rootArtist + " - " + rootTrack;
-                ToolTipService.SetToolTip(currTrack, rootArtist + " - " + rootTrack);
+                currStation.Text = "Current Station: " + Constants.getName(finalId);
+                currTrack.Text = "Current Track: " + rootTrack + " - " + rootArtist;
+                ToolTipService.SetToolTip(currTrack, rootTrack + " - " + rootArtist);
                 SetLiveTile();
             }
         }
 
-        private async void jiaTitle(int type, int appbarMode)
+        private async void sphTitle(int type, int appbarMode)
         {
-            var uri = new Uri("http://www.883jia.com.sg/songfeed/nowplaying.php");
+            var uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=MONEY_893&numberToFetch=1");
             var client = new HttpClient();
-            string response = "";
+            string finalId = "4000";
+
+            if (appbarMode == 0)
+            {
+                switch (playingId)
+                {
+                    case "4001":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=MONEY_893&numberToFetch=1");
+                        break;
+                    case "4003":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=ONE_FM_913&numberToFetch=1");
+                        break;
+                    case "4004":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=KISS_92&numberToFetch=1");
+                        break;
+                    case "5003":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=HAO_963&numberToFetch=1");
+                        break;
+                    case "5005":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=UFM_1003&numberToFetch=1");
+                        break;
+                    default:
+                        break;
+                }
+                finalId = playingId;
+            }
+            else if (appbarMode == 1)
+            {
+                switch (globalId)
+                {
+                    case "4001":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=MONEY_893&numberToFetch=1");
+                        break;
+                    case "4003":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=ONE_FM_913&numberToFetch=1");
+                        break;
+                    case "4004":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=KISS_92&numberToFetch=1");
+                        break;
+                    case "5003":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=HAO_963&numberToFetch=1");
+                        break;
+                    case "5005":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=UFM_1003&numberToFetch=1");
+                        break;
+                    default:
+                        break;
+                }
+                finalId = globalId;
+            }
+
+            var rootTrack = "";
+            var rootArtist = "";
 
             try
             {
-                response = await client.GetStringAsync(uri);
+                string response = await client.GetStringAsync(uri);
+                XmlDocument doc1 = new XmlDocument();
+                doc1.LoadXml(response);
+                rootTrack = doc1.LastChild.FirstChild.ChildNodes[2].InnerText;
+                rootArtist = doc1.LastChild.FirstChild.ChildNodes[3].InnerText;
             }
             catch (Exception)
             {
-                return;
-            }
 
-            JsonObject parser = JsonObject.Parse(response);
-            var rootArtist = parser.GetNamedString("artist");
-            var rootTrack = parser.GetNamedString("song");
-            var finalTrack = WebUtility.HtmlDecode(rootArtist + " - " + rootTrack);
+            }
 
             if (appbarMode == 0)
             {
                 SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                updater.MusicProperties.Title = finalTrack;
+                updater.MusicProperties.Title = rootTrack + " - " + rootArtist;
                 updater.Update();
             }
 
             if (type == 0)
             {
-                var messageDialog = new MessageDialog(finalTrack, "SG Radio - 88.3 Jia FM: Now Playing");
+                var messageDialog = new MessageDialog(rootTrack + " - " + rootArtist, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
                 messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
                 {
                     DataPackage package = new DataPackage();
-                    package.SetText(finalTrack);
+                    package.SetText(rootTrack + " - " + rootArtist);
                     Clipboard.SetContent(package);
                 }));
                 messageDialog.Commands.Add(new UICommand("Star", (command) =>
                 {
                     App.Insert_StarredItem((new StarredDataSQL()
                     {
-                        StarredTitle = finalTrack,
-                        StarredImage = Constants.getImage("2008"),
+                        StarredTitle = rootTrack + " - " + rootArtist,
+                        StarredImage = Constants.getImage(finalId),
                         StarredTime = DateTime.Now.ToString()
                     }));
                     initializeStarredHub();
@@ -1053,9 +818,108 @@ namespace SG_Radio_for_8._1
             }
             else if (type == 1)
             {
-                currStation.Text = "Current Station: 88.3 Jia FM";
-                currTrack.Text = "Current Track: " + finalTrack;
-                ToolTipService.SetToolTip(currTrack, finalTrack);
+                currStation.Text = "Current Station: " + Constants.getName(finalId);
+                currTrack.Text = "Current Track: " + rootTrack + " - " + rootArtist;
+                ToolTipService.SetToolTip(currTrack, rootTrack + " - " + rootArtist);
+                SetLiveTile();
+            }
+        }
+
+        private async void soDramaTitle(int type, int appbarMode)
+        {
+            var uri = new Uri("https://www.power98.com.sg/wp-admin/admin-ajax.php?action=orangePlaylist-json");
+            var client = new HttpClient();
+            string finalId = "4008";
+
+            if (appbarMode == 0)
+            {
+                switch (playingId)
+                {
+                    case "4008":
+                        uri = new Uri("https://www.power98.com.sg/wp-admin/admin-ajax.php?action=orangePlaylist-json");
+                        break;
+                    case "5000":
+                        uri = new Uri("https://www.883jia.com.sg/wp-admin/admin-ajax.php?action=orangePlaylist-json");
+                        break;
+                    default:
+                        break;
+                }
+                finalId = playingId;
+            }
+            else if (appbarMode == 1)
+            {
+                switch (globalId)
+                {
+                    case "4008":
+                        uri = new Uri("https://www.power98.com.sg/wp-admin/admin-ajax.php?action=orangePlaylist-json");
+                        break;
+                    case "5000":
+                        uri = new Uri("https://www.883jia.com.sg/wp-admin/admin-ajax.php?action=orangePlaylist-json");
+                        break;
+                    default:
+                        break;
+                }
+                finalId = globalId;
+            }
+
+            var rootTrack = "";
+            var rootArtist = "";
+            string response = "";
+
+            try
+            {
+                response = await client.GetStringAsync(uri);
+                dynamic data = JArray.Parse(response);
+                rootTrack = data[0].cue_title;
+                rootArtist = data[0].track_artist_name;
+            }
+            catch (Exception)
+            {
+                rootArtist = "Not available";
+            }
+
+            if (appbarMode == 0)
+            {
+                SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
+                updater.MusicProperties.Title = rootTrack + " - " + rootArtist;
+                updater.Update();
+            }
+
+            if (type == 0)
+            {
+                var messageDialog = new MessageDialog(rootTrack + " - " + rootArtist, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
+                messageDialog.Commands.Add(new UICommand("Close", (command) =>
+                {
+                }));
+                messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
+                {
+                    DataPackage package = new DataPackage();
+                    package.SetText(rootTrack + " - " + rootArtist);
+                    Clipboard.SetContent(package);
+                }));
+                messageDialog.Commands.Add(new UICommand("Star", (command) =>
+                {
+                    App.Insert_StarredItem((new StarredDataSQL()
+                    {
+                        StarredTitle = rootTrack + " - " + rootArtist,
+                        StarredImage = Constants.getImage(finalId),
+                        StarredTime = DateTime.Now.ToString()
+                    }));
+                    initializeStarredHub();
+                }));
+                messageDialog.DefaultCommandIndex = 0;
+                if (asyncCommand != null)
+                {
+                    asyncCommand.Cancel();
+                }
+
+                asyncCommand = messageDialog.ShowAsync();
+            }
+            else if (type == 1)
+            {
+                currStation.Text = "Current Station: " + Constants.getName(finalId);
+                currTrack.Text = "Current Track: " + rootTrack + " - " + rootArtist;
+                ToolTipService.SetToolTip(currTrack, rootTrack + " - " + rootArtist);
                 SetLiveTile();
             }
         }
@@ -1065,25 +929,22 @@ namespace SG_Radio_for_8._1
             var uri = new Uri("http://polling.bbc.co.uk/modules/onairpanel/include/bbc_world_service.jsonp");
             var client = new HttpClient();
             string response = "";
+            string titleFinish = "";
 
             try
             {
                 response = await client.GetStringAsync(uri);
+                var titleStart = response.IndexOf("On Now : ");
+                titleStart = titleStart + 9;
+                var testString = response.Substring(titleStart, response.Length - titleStart);
+                var closureStart = testString.IndexOf("\\\">") + 3;
+                var closureEnd = testString.IndexOf("<\\/a>");
+                titleFinish = testString.Substring(closureStart, closureEnd - closureStart);
             }
             catch (Exception)
             {
-                return;
+                titleFinish = "Not available";
             }
-
-            var titleStart = response.IndexOf("On Now : ");
-            titleStart = titleStart + 9;
-
-            var testString = response.Substring(titleStart, response.Length - titleStart);
-
-            var closureStart = testString.IndexOf("\\\">") + 3;
-            var closureEnd = testString.IndexOf("<\\/a>");
-
-            var titleFinish = testString.Substring(closureStart, closureEnd - closureStart);
 
             if (appbarMode == 0)
             {
@@ -1094,7 +955,7 @@ namespace SG_Radio_for_8._1
 
             if (type == 0)
             {
-                var messageDialog = new MessageDialog(titleFinish, "SG Radio - BBC World Service: Now Playing");
+                var messageDialog = new MessageDialog(titleFinish, "SG Radio - BBC World Service" + ": Now Playing");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
@@ -1109,7 +970,7 @@ namespace SG_Radio_for_8._1
                     App.Insert_StarredItem((new StarredDataSQL()
                     {
                         StarredTitle = titleFinish,
-                        StarredImage = Constants.getImage("1010"),
+                        StarredImage = Constants.getImage("4000"),
                         StarredTime = DateTime.Now.ToString()
                     }));
                     initializeStarredHub();
@@ -1131,152 +992,138 @@ namespace SG_Radio_for_8._1
             }
         }
 
-        private async void tlrTitle(int type, int appbarMode)
+        private async void othersTitle(int type, int appbarMode)
         {
-            var uri = new Uri("http://theliveradio.sg/rcs/NowPlaying.txt?windows8cache=" + DateTime.Now);
+            var uri = new Uri("http://onlineradiobox.com/json/sg/973fm/playlist/0");
             var client = new HttpClient();
+            string finalId = "4010";
 
             string response = "";
-
-            try
-            {
-                response = await client.GetStringAsync(uri);
-                if (response == "")
-                    response = "Non-stop Hit Music";
-            }
-            catch (Exception)
-            {
-                return;
-            }
+            var currPlaying = "";
 
             if (appbarMode == 0)
-            {
-                SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                updater.MusicProperties.Title = response;
-                updater.Update();
-            }
-
-            if (type == 0)
-            {
-                var messageDialog = new MessageDialog(response, "SG Radio - The Live Radio: Now Playing");
-                messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                {
-                }));
-                messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
-                {
-                    DataPackage package = new DataPackage();
-                    package.SetText(response);
-                    Clipboard.SetContent(package);
-                }));
-                messageDialog.Commands.Add(new UICommand("Star", (command) =>
-                {
-                    App.Insert_StarredItem((new StarredDataSQL()
-                    {
-                        StarredTitle = response,
-                        StarredImage = Constants.getImage("1009"),
-                        StarredTime = DateTime.Now.ToString()
-                    }));
-                    initializeStarredHub();
-                }));
-                messageDialog.DefaultCommandIndex = 0;
-                if (asyncCommand != null)
-                {
-                    asyncCommand.Cancel();
-                }
-
-                asyncCommand = messageDialog.ShowAsync();
-            }
-            else if (type == 1)
-            {
-                currStation.Text = "Current Station: The Live Radio";
-                currTrack.Text = "Current Track: " + response;
-                ToolTipService.SetToolTip(currTrack, response);
-                SetLiveTile();
-            }
-        }
-
-        private async void sphTitle(int type, int appbarMode)
-        {
-            var uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=sph-kiss92");
-            var client = new HttpClient();
-            string finalId = "1000";
-
-            if (appbarMode == 0)
-            {
-                switch (playingId)
-                {
-                    case "1001":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=913fm");
-                        break;
-                    case "1002":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=sph-kiss92");
-                        break;
-                    case "2007":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=1003fm");
-                        break;
-                    default:
-                        break;
-                }
                 finalId = playingId;
-            }
             else if (appbarMode == 1)
-            {
-                switch (globalId)
-                {
-                    case "1001":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=913fm");
-                        break;
-                    case "1002":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=sph-kiss92");
-                        break;
-                    case "2007":
-                        uri = new Uri("http://meta.radioactive.sg/index.php?format=json&m=1003fm");
-                        break;
-                    default:
-                        break;
-                }
                 finalId = globalId;
-            }
 
-            string response = "";
-
-            try
+            switch (finalId)
             {
-                response = await client.GetStringAsync(uri);
-            }
-            catch (Exception)
-            {
-                return;
-            }
+                case "4010":
+                    uri = new Uri("http://onlineradiobox.com/json/sg/973fm/playlist/0");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        RootObject playList = JsonConvert.DeserializeObject<RootObject>(response);
+                        Playlist firstItem = playList.playlist.First();
+                        currPlaying = firstItem.name;
+                    }
+                    catch (Exception)
+                    {
 
-            JsonObject parser = JsonObject.Parse(response);
-            var rootArtist = parser.GetNamedString("artist");
-            var rootTrack = parser.GetNamedString("track");
+                    }
+                    break;
+                case "4011":
+                    uri = new Uri("https://nowplaying.audiospace.co/210/currentlyPlaying");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        dynamic data = JObject.Parse(response);
+                        currPlaying = data.song + " - " + data.artist;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    break;
+                case "4012":
+                    currPlaying = "Bible Witness Web Radio";
+                    break;
+                case "4013":
+                    currPlaying = "Hitz.fm";
+                    break;
+                case "4014":
+                    uri = new Uri("https://quasar.shoutca.st/external/rpc.php?callback=&m=recenttracks.get&username=muhammadizar&rid=muhammadizar&limit=1");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        dynamic data = JObject.Parse(response);
+                        currPlaying = data.data[0][0].title + " - " + data.data[0][0].artist;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    break;
+                case "5009":
+                    uri = new Uri("http://www.kiismedia.com/radio/index.php?c=Melody");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        dynamic data = JObject.Parse(response);
+                        currPlaying = data.title + " - " + data.artist;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    break;
+                case "5010":
+                    uri = new Uri("https://quasar.shoutca.st/external/rpc.php?callback=&m=recenttracks.get&username=muhammadizar&rid=muhammadizar&limit=1");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        dynamic data = JObject.Parse(response);
+                        currPlaying = data.data[0][0].title + " - " + data.data[0][0].artist;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    break;
+                case "5011":
+                    uri = new Uri("https://quasar.shoutca.st/external/rpc.php?callback=&m=recenttracks.get&username=muhammadizar&rid=muhammadizar&limit=1");
+                    try
+                    {
+                        response = await client.GetStringAsync(uri);
+                        dynamic data = JObject.Parse(response);
+                        currPlaying = data.data[0][0].title + " - " + data.data[0][0].artist;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    break;
+                case "5012":
+                    currPlaying = "Desi Dance";
+                    break;
+                default:
+                    break;
+            }
 
             if (appbarMode == 0)
             {
                 SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                updater.MusicProperties.Title = rootArtist + " - " + rootTrack;
+                updater.MusicProperties.Title = currPlaying;
                 updater.Update();
             }
 
             if (type == 0)
             {
-                var messageDialog = new MessageDialog(rootArtist + " - " + rootTrack, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
+                var messageDialog = new MessageDialog(currPlaying, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
                 messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
                 {
                     DataPackage package = new DataPackage();
-                    package.SetText(rootArtist + " - " + rootTrack);
+                    package.SetText(currPlaying);
                     Clipboard.SetContent(package);
                 }));
                 messageDialog.Commands.Add(new UICommand("Star", (command) =>
                 {
                     App.Insert_StarredItem((new StarredDataSQL()
                     {
-                        StarredTitle = rootArtist + " - " + rootTrack,
+                        StarredTitle = currPlaying,
                         StarredImage = Constants.getImage(finalId),
                         StarredTime = DateTime.Now.ToString()
                     }));
@@ -1293,390 +1140,9 @@ namespace SG_Radio_for_8._1
             else if (type == 1)
             {
                 currStation.Text = "Current Station: " + Constants.getName(finalId);
-                currTrack.Text = "Current Track: " + rootArtist + " - " + rootTrack;
-                ToolTipService.SetToolTip(currTrack, rootArtist + " - " + rootTrack);
+                currTrack.Text = "Current Track: " + currPlaying;
+                ToolTipService.SetToolTip(currTrack, currPlaying);
                 SetLiveTile();
-            }
-        }
-
-        private async void fm973Title(int type, int appbarMode)
-        {
-            var fm973uri = "http://cast5.serverhostingcenter.com/js.php/radio973/streaminfo/rnd0";
-            HttpClient client = new HttpClient();
-            string finalTrack = String.Empty;
-
-            try
-            {
-                var fm973get = new HttpRequestMessage(HttpMethod.Get, fm973uri);
-                HttpResponseMessage data = await client.SendAsync(fm973get);
-                HttpContent content = data.Content;
-                data.EnsureSuccessStatusCode();
-
-                string response = await content.ReadAsStringAsync();
-
-                StringReader read = new StringReader(response);
-                string line = read.ReadLine();
-                string[] split1 = line.Split(',');
-                string value = split1[1];
-
-                string line2 = split1[1];
-                string[] split2 = line2.Split(':');
-                string index2 = split2[0];
-                string value2 = split2[1];
-
-                finalTrack = value2;
-
-                if (appbarMode == 0)
-                {
-                    SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                    updater.MusicProperties.Title = finalTrack.Substring(2, finalTrack.Length - 3);
-                    updater.Update();
-                }
-
-                if (type == 0)
-                {
-                    var messageDialog = new MessageDialog(finalTrack.Substring(2, finalTrack.Length - 3), "SG Radio - 973FM" + ": Now Playing");
-                    messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                    {
-                    }));
-                    messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
-                    {
-                        DataPackage package = new DataPackage();
-                        package.SetText(finalTrack);
-                        Clipboard.SetContent(package);
-                    }));
-                    messageDialog.Commands.Add(new UICommand("Star", (command) =>
-                    {
-                        App.Insert_StarredItem((new StarredDataSQL()
-                        {
-                            StarredTitle = finalTrack.Substring(2, finalTrack.Length - 3),
-                            StarredImage = Constants.getImage("1008"),
-                            StarredTime = DateTime.Now.ToString()
-                        }));
-                        initializeStarredHub();
-                    }));
-                    messageDialog.DefaultCommandIndex = 0;
-                    if (asyncCommand != null)
-                    {
-                        asyncCommand.Cancel();
-                    }
-
-                    asyncCommand = messageDialog.ShowAsync();
-                }
-                else if (type == 1)
-                {
-                    currStation.Text = "Current Station: 973FM";
-                    currTrack.Text = "Current Track: " + finalTrack.Substring(2, finalTrack.Length - 3);
-                    ToolTipService.SetToolTip(currTrack, finalTrack.Substring(2, finalTrack.Length - 3));
-                    SetLiveTile();
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        private async void mediacorpTitle(int type, int appbarMode)
-        {
-            string mediacorpAPI = "";
-            string finalId = "1000";
-            if (appbarMode == 0)
-            {
-                mediacorpAPI = Constants.getTitle(playingId);
-                finalId = playingId;
-            }
-
-            else if (appbarMode == 1)
-            {
-                mediacorpAPI = Constants.getTitle(globalId);
-                finalId = globalId;
-            }
-
-            HttpClient req = new HttpClient();
-
-            try
-            {
-                var message2 = new HttpRequestMessage(HttpMethod.Get, mediacorpAPI);
-                HttpResponseMessage data = await req.SendAsync(message2);
-                HttpContent content = data.Content;
-                data.EnsureSuccessStatusCode();
-
-                string response2 = await content.ReadAsStringAsync();
-
-                string artistStr = @"<span class=""albumartist"">";
-                string titleStr = @"<span class=""albumtitle"">";
-                string endStr = "</span>";
-
-                int artistStrIndex = response2.IndexOf(artistStr);
-                int titleStrIndex = response2.IndexOf(titleStr);
-                if (artistStrIndex != -1 && titleStrIndex != -1)
-                {
-                    artistStrIndex += artistStr.Length;
-                    titleStrIndex += titleStr.Length;
-
-                    string Artist = WebUtility.HtmlDecode(response2.Substring(artistStrIndex, response2.IndexOf(endStr, artistStrIndex) - artistStrIndex));
-                    string Title = WebUtility.HtmlDecode(response2.Substring(titleStrIndex, response2.IndexOf(endStr, titleStrIndex) - titleStrIndex));
-
-                    if (appbarMode == 0)
-                    {
-                        SystemMediaTransportControlsDisplayUpdater updater = systemControls.DisplayUpdater;
-                        systemControls.DisplayUpdater.MusicProperties.Title = Artist + " - " + Title;
-                        updater.Update();
-                    }
-
-                    if (type == 0)
-                    {
-                        var messageDialog = new MessageDialog(Artist + " - " + Title, "SG Radio - " + Constants.getName(finalId) + ": Now Playing");
-                        messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                        {
-                        }));
-                        messageDialog.Commands.Add(new UICommand("Copy to Clipboard", (command) =>
-                        {
-                            DataPackage package = new DataPackage();
-                            package.SetText(Artist + " - " + Title);
-                            Clipboard.SetContent(package);
-                        }));
-                        messageDialog.Commands.Add(new UICommand("Star", (command) =>
-                        {
-                            App.Insert_StarredItem((new StarredDataSQL()
-                            {
-                                StarredTitle = Artist + " - " + Title,
-                                StarredImage = Constants.getImage(finalId),
-                                StarredTime = DateTime.Now.ToString()
-                            }));
-                            initializeStarredHub();
-                        }));
-                        messageDialog.DefaultCommandIndex = 0;
-                        if (asyncCommand != null)
-                        {
-                            asyncCommand.Cancel();
-                        }
-
-                        asyncCommand = messageDialog.ShowAsync();
-                    }
-                    else if (type == 1)
-                    {
-                        currStation.Text = "Current Station: " + Constants.getName(finalId);
-                        currTrack.Text = "Current Track: " + Artist + " - " + Title;
-                        ToolTipService.SetToolTip(currTrack, Artist + " - " + Title);
-                        SetLiveTile();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-        #endregion
-
-        #region LyricsFetch
-        private async void mediacorpLyrics(int appbarMode)
-        {
-            string lyricsAPI = "";
-            string finalId = "1000";
-            if (appbarMode == 0)
-            {
-                lyricsAPI = Constants.getLyrics(playingId);
-                finalId = playingId;
-            }
-
-            else if (appbarMode == 1)
-            {
-                lyricsAPI = Constants.getLyrics(globalId);
-                finalId = globalId;
-            }
-
-            HttpClient client = new HttpClient();
-
-            try
-            {
-                var lyricsData = new HttpRequestMessage(HttpMethod.Get, lyricsAPI);
-                HttpResponseMessage data = await client.SendAsync(lyricsData);
-                HttpContent content = data.Content;
-                data.EnsureSuccessStatusCode();
-
-                string response2 = await content.ReadAsStringAsync();
-
-                response2 = response2.Replace("<br>", "\n");
-
-                string lyricsStr = @"<div class=""lyricstext"">";
-                string endStr = "</div>";
-
-                int lyricsStrIndex = response2.IndexOf(lyricsStr);
-                if (lyricsStrIndex != -1)
-                {
-                    lyricsStrIndex += lyricsStr.Length;
-
-                    string Lyrics = WebUtility.HtmlDecode(response2.Substring(lyricsStrIndex, response2.IndexOf(endStr, lyricsStrIndex) - lyricsStrIndex));
-
-                    if ((Lyrics == "Sorry! We are unable to display the lyrics for this song right now.") || (Lyrics == "We are not in a position to display these lyrics due to licensing restrictions. Sorry for the inconvenience."))
-                    {
-                        var messageDialog = new MessageDialog("No lyrics currently available.", Constants.getName(finalId) + ": Lyrics");
-                        messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                        {
-                        }));
-                        messageDialog.DefaultCommandIndex = 0;
-                        if (asyncCommand != null)
-                        {
-                            asyncCommand.Cancel();
-                        }
-
-                        asyncCommand = messageDialog.ShowAsync();
-                    }
-                    else
-                    {
-                        lyricsDialog.Title = Constants.getName(finalId) + ": Lyrics";
-                        lyricsText.Text = Lyrics.Trim();
-                        lyricsDialog.IsOpen = true;
-                    }
-                }
-                else
-                {
-                    var messageDialog = new MessageDialog("No lyrics currently available.", Constants.getName(finalId) + ": Lyrics");
-                    messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                    {
-                    }));
-                    messageDialog.DefaultCommandIndex = 0;
-                    if (asyncCommand != null)
-                    {
-                        asyncCommand.Cancel();
-                    }
-
-                    asyncCommand = messageDialog.ShowAsync();
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        private void fm973Lyrics()
-        {
-            var messageDialog = new MessageDialog("Lyrics are not available for this station.", "SG Radio - 973FM: Lyrics");
-            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-            {
-            }));
-            messageDialog.DefaultCommandIndex = 0;
-            if (asyncCommand != null)
-            {
-                asyncCommand.Cancel();
-            }
-
-            asyncCommand = messageDialog.ShowAsync();
-        }
-
-        private void tlrLyrics()
-        {
-            var messageDialog = new MessageDialog("Lyrics are not available for this station.", "SG Radio - The Live Radio: Lyrics");
-            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-            {
-            }));
-            messageDialog.DefaultCommandIndex = 0;
-            if (asyncCommand != null)
-            {
-                asyncCommand.Cancel();
-            }
-
-            asyncCommand = messageDialog.ShowAsync();
-        }
-
-        private void bbcLyrics()
-        {
-            var messageDialog = new MessageDialog("Lyrics are not available for this station.", "SG Radio - BBC World Service: Lyrics");
-            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-            {
-            }));
-            messageDialog.DefaultCommandIndex = 0;
-            if (asyncCommand != null)
-            {
-                asyncCommand.Cancel();
-            }
-
-            asyncCommand = messageDialog.ShowAsync();
-        }
-
-        private void p98Lyrics()
-        {
-            var messageDialog = new MessageDialog("Lyrics are not available for this station.", "SG Radio - Power 98 FM: Lyrics");
-            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-            {
-            }));
-            messageDialog.DefaultCommandIndex = 0;
-            if (asyncCommand != null)
-            {
-                asyncCommand.Cancel();
-            }
-
-            asyncCommand = messageDialog.ShowAsync();
-        }
-
-        private void jiaLyrics()
-        {
-            var messageDialog = new MessageDialog("Lyrics are not available for this station.", "SG Radio - 88.3 Jia FM: Lyrics");
-            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-            {
-            }));
-            messageDialog.DefaultCommandIndex = 0;
-            if (asyncCommand != null)
-            {
-                asyncCommand.Cancel();
-            }
-
-            asyncCommand = messageDialog.ShowAsync();
-        }
-
-        private async void sphLyrics(int appbarMode)
-        {
-            string lyricsAPI = "";
-            string finalId = "1000";
-            if (appbarMode == 0)
-            {
-                lyricsAPI = Constants.getLyrics(playingId);
-                finalId = playingId;
-            }
-
-            else if (appbarMode == 1)
-            {
-                lyricsAPI = Constants.getLyrics(globalId);
-                finalId = globalId;
-            }
-
-            var uri = new Uri(lyricsAPI);
-            var client = new HttpClient();
-
-            string response = "";
-
-            try
-            {
-                response = await client.GetStringAsync(uri);
-            }
-            catch (Exception)
-            {
-                return;
-            }
-
-            JsonObject parser = JsonObject.Parse(response);
-            var rootLyrics = parser.GetNamedString("lyrics");
-
-            if (rootLyrics == "Sorry! We are unable to display the lyrics for this song right now.")
-            {
-                var messageDialog = new MessageDialog("No lyrics currently available.", "SG Radio - " + Constants.getName(finalId) + ": Lyrics");
-                messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                {
-                }));
-                messageDialog.DefaultCommandIndex = 0;
-                if (asyncCommand != null)
-                {
-                    asyncCommand.Cancel();
-                }
-
-                asyncCommand = messageDialog.ShowAsync();
-            }
-            else
-            {
-                lyricsDialog.Title = Constants.getName(finalId) + ": Lyrics";
-                lyricsText.Text = rootLyrics.Trim().Replace("<div id=\"lyrics\" class=\"SCREENONLY\" itemprop=\"description\">", "");
-                lyricsDialog.IsOpen = true;
             }
         }
         #endregion
@@ -1688,7 +1154,7 @@ namespace SG_Radio_for_8._1
             currentSongBtn.IsEnabled = type;
             stopBtn.IsEnabled = type;
             lyricsBtn.IsEnabled = type;
-            refreshBtn.IsEnabled = type;
+            // refreshBtn.IsEnabled = type;
             stnWebsiteBtn.IsEnabled = type;
             stnProgrammingBtn.IsEnabled = type;
 
@@ -1713,16 +1179,8 @@ namespace SG_Radio_for_8._1
                         itemImage,
                         itemImage
                     );
-                // for windows 8.1
-                /* var tile = new SecondaryTile(
-                     itemId,
-                     "SG Radio: " + itemTitle,
-                     "?ItemId=" + itemId, // activation arguments, can be used for: "?aa=test&bb=c"
-                     itemImage,
-                     TileSize.Wide310x150 | TileSize.Square150x150 
-                     );*/
 
-                tile.VisualElements.ForegroundText = ForegroundText.Light; // Depends on this one :D
+                tile.VisualElements.ForegroundText = ForegroundText.Light;
 
                 bool pinned = await tile.RequestCreateForSelectionAsync(GetElementRectangle(sender as FrameworkElement), Placement.Below);
 
@@ -1760,89 +1218,38 @@ namespace SG_Radio_for_8._1
         {
             if (appBarSelected)
             {
-                efrFetch(1);
+                efrTick(0, 1);
             }
             else
             {
-                efrFetch(0);
+                efrTick(0, 0);
             }
         }
 
         private void lyrics_Click(object sender, RoutedEventArgs e)
         {
-            if (appBarSelected)
+            var messageDialog = new MessageDialog("It was fun while it lasted, but our radio stations no longer provide lyrics data.", "SG Radio - Lyrics");
+            messageDialog.Commands.Add(new UICommand("Close", (command) =>
             {
-                if (globalId == "1001" || globalId == "1002" || globalId == "2007")
-                {
-                    sphLyrics(1);
-                }
-                else if (globalId == "1008")
-                {
-                    fm973Lyrics();
-                }
-                else if (globalId == "1009")
-                {
-                    tlrLyrics();
-                }
-                else if (globalId == "1010")
-                {
-                    bbcLyrics();
-                }
-                else if (globalId == "1011")
-                {
-                    p98Lyrics();
-                }
-                else if (globalId == "2008")
-                {
-                    jiaLyrics();
-                }
-                else
-                {
-                    mediacorpLyrics(1);
-                }
-            }
-            else
+            }));
+            messageDialog.DefaultCommandIndex = 0;
+            if (asyncCommand != null)
             {
-                if (playingId == "1001" || playingId == "1002" || playingId == "2007")
-                {
-                    sphLyrics(0);
-                }
-                else if (playingId == "1008")
-                {
-                    fm973Lyrics();
-                }
-                else if (playingId == "1009")
-                {
-                    tlrLyrics();
-                }
-                else if (playingId == "1010")
-                {
-                    bbcLyrics();
-                }
-                else if (playingId == "1011")
-                {
-                    p98Lyrics();
-                }
-                else if (playingId == "2008")
-                {
-                    jiaLyrics();
-                }
-                else
-                {
-                    mediacorpLyrics(0);
-                }
+                asyncCommand.Cancel();
             }
+
+            asyncCommand = messageDialog.ShowAsync();
         }
 
         private void refresh_Click(object sender, RoutedEventArgs e)
         {
             if (appBarSelected)
             {
-                efrTick(1);
+                efrTick(0, 1);
             }
             else
             {
-                efrTick(0);
+                efrTick(0, 0);
             }
         }
 
@@ -1926,9 +1333,9 @@ namespace SG_Radio_for_8._1
                 else
                 {
                     App.Insert_FavoriteItem((new FavDataSQL()
-                {
-                    FavID = globalId,
-                }));
+                    {
+                        FavID = globalId,
+                    }));
 
                 }
 
@@ -1962,6 +1369,50 @@ namespace SG_Radio_for_8._1
                     initializeFavoritesHub();
                 }
             }
+        }
+
+        private void Ellipsis_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            BottomAppBar.IsOpen = true;
+        }
+
+        void BottomAppBar_Closed(object sender, object e)
+        {
+            ellipsisMove2.Begin();
+
+            GridView itemGridView = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView");
+            GridView itemGridView2 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView1");
+            GridView itemGridView3 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView2");
+            GridView itemGridView4 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView3");
+            if (itemGridView != null)
+            {
+                itemGridView.SelectedItem = null;
+                itemGridView.SelectedIndex = -1;
+                itemGridView.SelectedValue = null;
+            }
+            if (itemGridView2 != null)
+            {
+                itemGridView2.SelectedItem = null;
+                itemGridView2.SelectedIndex = -1;
+                itemGridView2.SelectedValue = null;
+            }
+            if (itemGridView3 != null)
+            {
+                itemGridView3.SelectedItem = null;
+                itemGridView3.SelectedValue = null;
+                itemGridView3.SelectedIndex = -1;
+            }
+            if (itemGridView4 != null)
+            {
+                itemGridView4.SelectedItem = null;
+                itemGridView4.SelectedIndex = -1;
+                itemGridView4.SelectedValue = null;
+            }
+        }
+
+        void BottomAppBar_Opened(object sender, object e)
+        {
+            ellipsisMove.Begin();
         }
         #endregion
 
@@ -2014,39 +1465,39 @@ namespace SG_Radio_for_8._1
         {
             if (e.Size.Width < e.Size.Height)
             {
-                searchGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                searchGrid.Visibility = Visibility.Collapsed;
 
                 if (e.Size.Width < 540 && e.Size.Height >= 768)
                 {
-                    ParentHub.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
+                    ParentHub.HorizontalAlignment = HorizontalAlignment.Center;
                     switchVertical();
                 }
                 if (e.Size.Width < 600)
                 {
-                    statusGrid.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
-                    pageTitle.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    statusGrid.HorizontalAlignment = HorizontalAlignment.Center;
+                    pageTitle.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    statusGrid.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Right;
+                    statusGrid.HorizontalAlignment = HorizontalAlignment.Right;
                     Thickness margin = statusGrid.Margin;
                     margin.Right = 50;
                     margin.Top = 52;
                     statusGrid.Margin = margin;
-                    ParentHub.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Left;
-                    pageTitle.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    ParentHub.HorizontalAlignment = HorizontalAlignment.Left;
+                    pageTitle.Visibility = Visibility.Visible;
                     switchHorizontal();
                 }
             }
             else
             {
-                searchGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                statusGrid.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
+                searchGrid.Visibility = Visibility.Visible;
+                statusGrid.HorizontalAlignment = HorizontalAlignment.Center;
                 Thickness margin = statusGrid.Margin;
                 margin.Top = 52;
                 statusGrid.Margin = margin;
-                ParentHub.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Left;
-                pageTitle.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                ParentHub.HorizontalAlignment = HorizontalAlignment.Left;
+                pageTitle.Visibility = Visibility.Visible;
                 switchHorizontal();
             }
         }
@@ -2078,55 +1529,7 @@ namespace SG_Radio_for_8._1
 
         #endregion
 
-        private void Ellipsis_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            BottomAppBar.IsOpen = true;
-        }
-
-        void BottomAppBar_Closed(object sender, object e)
-        {
-            ellipsisMove2.Begin();
-
-            GridView itemGridView = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView");
-            GridView itemGridView2 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView1");
-            GridView itemGridView3 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView2");
-            GridView itemGridView4 = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView3");
-            if (itemGridView != null)
-            {
-                itemGridView.SelectedItem = null;
-                itemGridView.SelectedIndex = -1;
-                itemGridView.SelectedValue = null;
-            }
-            if (itemGridView2 != null)
-            {
-                itemGridView2.SelectedItem = null;
-                itemGridView2.SelectedIndex = -1;
-                itemGridView2.SelectedValue = null;
-            }
-            if (itemGridView3 != null)
-            {
-                itemGridView3.SelectedItem = null;
-                itemGridView3.SelectedValue = null;
-                itemGridView3.SelectedIndex = -1;
-            }
-            if (itemGridView4 != null)
-            {
-                itemGridView4.SelectedItem = null;
-                itemGridView4.SelectedIndex = -1;
-                itemGridView4.SelectedValue = null;
-            }
-        }
-
-        void BottomAppBar_Opened(object sender, object e)
-        {
-            ellipsisMove.Begin();
-        }
-
-        private void VolumeChangedEvent(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            mediaElement1.Volume = sliderVolume.Value / 100;
-        }
-
+        #region Selection Changed
         private void SelectionChangedFavourites(object sender, SelectionChangedEventArgs e)
         {
             GridView itemGridView = (GridView)FindChildControl<GridView>(ParentHub, "itemGridView");
@@ -2318,55 +1721,9 @@ namespace SG_Radio_for_8._1
                     toggleAppBar(false);
             }
         }
+        #endregion
 
-        private void standbyClose(object sender, RoutedEventArgs e)
-        {
-            standbyGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            BottomAppBar.IsEnabled = true;
-            timerStandby.Stop();
-        }
-
-        public SolidColorBrush ColorStringToBrush(string name)
-        {
-            var property = typeof(Colors).GetRuntimeProperty(name);
-            if (property != null)
-            {
-                return new SolidColorBrush((Color)property.GetValue(null));
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private void standbyView_Click(object sender, RoutedEventArgs e)
-        {
-            startStandby();
-
-            if (ApplicationData.Current.RoamingSettings.Values.ContainsKey("bgColor"))
-            {
-                standbyGrid.Background = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["bgColor"].ToString());
-
-                if (ApplicationData.Current.RoamingSettings.Values["bgColor"].ToString() == "White")
-                {
-                    backButton.RequestedTheme = ElementTheme.Light;
-                }
-                else
-                {
-                    backButton.RequestedTheme = ElementTheme.Dark;
-                }
-            }
-
-            if (ApplicationData.Current.RoamingSettings.Values.ContainsKey("txtColor"))
-            {
-                standbyTime.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
-                standbyStation.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
-                standbyTrack.Foreground = ColorStringToBrush(ApplicationData.Current.RoamingSettings.Values["txtColor"].ToString());
-            }
-
-            standbyGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-        }
-
+        #region Shutdown Timer
         private void timedShutdown1(object sender, RoutedEventArgs e)
         {
             countdown = 5;
@@ -2379,7 +1736,7 @@ namespace SG_Radio_for_8._1
             timerShutdown.Interval = TimeSpan.FromMinutes(1);
             timerShutdown.Tick += shutdown_Tick;
             timerShutdown.Start();
-            timerCountdown.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            timerCountdown.Visibility = Visibility.Visible;
         }
 
         private void shutdown_Tick(object sender, object e)
@@ -2391,7 +1748,7 @@ namespace SG_Radio_for_8._1
             {
                 timerShutdown.Stop();
                 completeClosure();
-                timerCountdown.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                timerCountdown.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -2426,9 +1783,11 @@ namespace SG_Radio_for_8._1
         private void timedShutdown6(object sender, RoutedEventArgs e)
         {
             timerShutdown.Stop();
-            timerCountdown.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            timerCountdown.Visibility = Visibility.Collapsed;
         }
+        #endregion
 
+        #region Search
         private void SearchBoxEventsSuggestionsRequested(object sender, SearchBoxSuggestionsRequestedEventArgs e)
         {
             string queryText = e.QueryText;
@@ -2444,10 +1803,9 @@ namespace SG_Radio_for_8._1
 
         private static readonly string[] suggestionList =
             {
-                "Gold 90.5FM", "HOT FM91.3", "Kiss 92FM", "Symphony 92.4FM", "938LIVE", "Class 95FM", "987FM", "Lush 99.5FM", "973FM", "Ria 89.7FM",
-                "Y.E.S. 93.3FM", "Warna 94.2FM", "Capital 95.8", "XFM 96.3", "Oli 96.8FM", "Love 97.2FM", "UFM 1003", "90.5", "91.3", "92.0",
-                "92.4", "93.8", "95.0", "99.5", "97.3", "89.7", "93.3", "94.2", "95.8", "96.3",
-                "96.8", "97.2", "100.3", "BBC World Service", "Power 98 FM", "88.3 Jia FM" // "The Live Radio"
+                "BBC World Service", "Money FM 89.3", "GOLD 90.5FM", "One FM 91.3", "Kiss 92FM", "Symphony 92.4FM", "938Now", "Class 95FM", "Power 98FM", "987FM",
+                "973FM", "Asia Expat Radio", "Bible Witness Web Radio", "Hitz.fm", "Orion Station", "88.3Jia FM", "Y.E.S. 93.3FM", "Capital 95.8FM", "96.3 Hao FM", "Love 97.2FM",
+                "UFM 1003", "Ria 89.7FM", "Warna 94.2FM", "Oli 96.8FM", "Radio Melody", "Naga FM", "DesiNetworks", "Desi Dance"
             };
 
         private void searchBoxSubmit(SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
@@ -2470,10 +1828,35 @@ namespace SG_Radio_for_8._1
                 searchBox1.QueryText = "I didn't find anything :(";
             }
         }
+        #endregion
 
-        private void weSpeakCode()
+        #region Json Parser
+        public class Song
         {
-            searchBox1.PlaceholderText = "We Speak Code";
+            [JsonProperty("track")]
+            public string Track { get; set; }
+
+            [JsonProperty("artist")]
+            public string Artist { get; set; }
         }
+
+        public class PlayListItem
+        {
+            [JsonProperty("song")]
+            public Song Song { get; set; }
+        }
+
+        public class Playlist
+        {
+            public string name { get; set; }
+            public int created { get; set; }
+            public string id { get; set; }
+        }
+
+        public class RootObject
+        {
+            public List<Playlist> playlist { get; set; }
+        }
+        #endregion
     }
 }

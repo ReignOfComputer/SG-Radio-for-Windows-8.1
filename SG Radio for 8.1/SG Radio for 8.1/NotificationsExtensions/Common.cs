@@ -1,12 +1,4 @@
-﻿// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-// PARTICULAR PURPOSE.
-//
-// Copyright (c) Microsoft Corporation. All rights reserved
-
-using System;
-using System.Collections.ObjectModel;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
 #if !WINRT_NOT_PRESENT
@@ -88,9 +80,6 @@ namespace NotificationsExtensions
         }
     }
 
-    /// <summary>
-    /// Base class for the notification content creation helper classes.
-    /// </summary>
 #if !WINRT_NOT_PRESENT
     internal abstract class NotificationBase
 #else
@@ -136,25 +125,16 @@ namespace NotificationsExtensions
         }
 #endif
 
-        /// <summary>
-        /// Retrieves the list of images that can be manipulated on the notification content.
-        /// </summary>
         public INotificationContentImage[] Images
         {
             get { return m_Images; }
         }
 
-        /// <summary>
-        /// Retrieves the list of text fields that can be manipulated on the notification content.
-        /// </summary>
         public INotificationContentText[] TextFields
         {
             get { return m_TextFields; }
         }
 
-        /// <summary>
-        /// The base Uri path that should be used for all image references in the notification.
-        /// </summary>
         public string BaseUri
         {
             get { return m_BaseUri; }
@@ -284,9 +264,6 @@ namespace NotificationsExtensions
         private bool? m_AddImageQueryNullable;
     }
 
-    /// <summary>
-    /// Exception returned when invalid notification content is provided.
-    /// </summary>
     internal sealed class NotificationContentValidationException : COMException
     {
         public NotificationContentValidationException(string message)
