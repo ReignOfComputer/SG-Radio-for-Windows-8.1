@@ -1,0 +1,38 @@
+﻿<UserControl
+    x:Class="SG_Radio_for_8._1.SettingsUserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SG_Radio_for_8._1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <StackPanel>
+            <ComboBox x:Name="bgCombo" SelectionChanged="bgColorChanged" Header="Standby View Background Colour" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" RequestedTheme="Light">
+                <x:String>Black</x:String>
+                <x:String>White</x:String>
+                <x:String>Red</x:String>
+                <x:String>Yellow</x:String>
+                <x:String>Green</x:String>
+                <x:String>Cyan</x:String>
+                <x:String>Blue</x:String>
+                <x:String>Purple</x:String>
+                <x:String>Brown</x:String>
+            </ComboBox>
+            <ComboBox x:Name="txtCombo" Foreground="Black" SelectionChanged="txtColorChanged" Header="Standby View Text Colour" HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" RequestedTheme="Light">
+                <x:String>Black</x:String>
+                <x:String>White</x:String>
+                <x:String>Red</x:String>
+                <x:String>Yellow</x:String>
+                <x:String>Green</x:String>
+                <x:String>Cyan</x:String>
+                <x:String>Blue</x:String>
+                <x:String>Purple</x:String>
+                <x:String>Brown</x:String>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

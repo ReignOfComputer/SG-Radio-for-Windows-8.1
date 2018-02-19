@@ -1,0 +1,140 @@
+{"Groups":[
+  {
+    "UniqueId": "Group-1",
+    "Title": "Group Title: 1",
+    "ImagePath": "Assets/DarkGray.png",
+	"JustAMessage": "Eew, why are you seeing this? Stop reverse engineering me! You make me a very sad pony :(",
+    "Items":
+    [
+      {
+        "UniqueId": "1000",
+        "Title": "Gold 90.5FM",
+        "ImagePath": "ms-appx:///Images/English/portal_1_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/905fm"
+      },
+      {
+        "UniqueId": "1001",
+        "Title": "HOT FM91.3",
+        "ImagePath": "ms-appx:///Images/English/portal_2_600_C.png",
+        "Content" : "http://sph.rastream.com/913fm"
+      },
+      {
+        "UniqueId": "1002",
+        "Title": "Kiss 92FM",
+        "ImagePath": "ms-appx:///Images/English/portal_3_600_C.png",
+        "Content" : "http://sph.rastream.com/sph-kiss92"
+      },
+      {
+        "UniqueId": "1003",
+        "Title": "Symphony 92.4FM",
+        "ImagePath": "ms-appx:///Images/English/portal_4_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/924fm"
+      },
+      {
+        "UniqueId": "1004",
+        "Title": "938LIVE",
+        "ImagePath": "ms-appx:///Images/English/portal_5_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/938fm"
+      },
+	        {
+        "UniqueId": "1005",
+        "Title": "Class 95FM",
+        "ImagePath": "ms-appx:///Images/English/portal_6_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/950fm"
+      },
+      {
+        "UniqueId": "1006",
+        "Title": "987FM",
+        "ImagePath": "ms-appx:///Images/English/portal_7_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/987fm"
+      },
+      {
+        "UniqueId": "1007",
+        "Title": "Lush 99.5FM",
+        "ImagePath": "ms-appx:///Images/English/portal_8_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/995fm"
+      },
+      {
+        "UniqueId": "1008",
+        "Title": "973FM",
+        "ImagePath": "ms-appx:///Images/English/portal_9_600_C.png",
+        "Content" : "http://209.105.250.73:8650/stream"
+      },
+	  {
+        "UniqueId": "1010",
+        "Title": "BBC World Service",
+        "ImagePath": "ms-appx:///Images/English/portal_11_600_C.png",
+        "Content" : "http://livewmstream-ws.bbc.co.uk.edgestreams.net/reflector:38972"
+      },
+	  {
+        "UniqueId": "1011",
+        "Title": "Power 98 FM",
+        "ImagePath": "ms-appx:///Images/English/portal_12_600_C.png",
+        "Content" : "http://streaming.clickhere2.com/power98.asx"
+      }
+    ]
+  },
+  {
+    "UniqueId": "Group-2",
+    "Title": "Group Title: 2",
+    "ImagePath": "Assets/DarkGray.png",
+    "Items":
+    [
+      {
+        "UniqueId": "2000",
+        "Title": "Ria 89.7FM",
+        "ImagePath": "ms-appx:///Images/Others/news_1_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/897fm"
+      },
+      {
+        "UniqueId": "2001",
+        "Title": "Y.E.S. 93.3FM",
+        "ImagePath": "ms-appx:///Images/Others/news_2_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/933fm"
+      },
+      {
+        "UniqueId": "2002",
+        "Title": "Warna 94.2FM",
+        "ImagePath": "ms-appx:///Images/Others/news_3_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/942fm"
+      },
+      {
+        "UniqueId": "2003",
+        "Title": "Capital 95.8",
+        "ImagePath": "ms-appx:///Images/Others/news_4_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/958fm"
+      },
+      {
+        "UniqueId": "2004",
+        "Title": "XFM 96.3",
+        "ImagePath": "ms-appx:///Images/Others/news_5_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/963fm"
+      },
+	        {
+        "UniqueId": "2005",
+        "Title": "Oli 96.8FM",
+        "ImagePath": "ms-appx:///Images/Others/news_6_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/968fm"
+      },
+      {
+        "UniqueId": "2006",
+        "Title": "Love 97.2FM",
+        "ImagePath": "ms-appx:///Images/Others/news_7_600_C.png",
+        "Content" : "http://mediacorp.rastream.com/972fm"
+      },
+      {
+        "UniqueId": "2007",
+        "Title": "UFM 1003",
+        "ImagePath": "ms-appx:///Images/Others/news_8_600_C.png",
+        "Content" : "http://sph.rastream.com/1003fm"
+      },
+	  {
+        "UniqueId": "2008",
+        "Title": "88.3 Jia FM",
+        "ImagePath": "ms-appx:///Images/Others/news_9_600_C.png",
+        "Content" : "http://streaming.clickhere2.com/883jia.asx"
+      }
+    ]
+  }
+]
+}
