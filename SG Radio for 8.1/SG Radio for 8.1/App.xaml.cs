@@ -219,7 +219,7 @@ namespace SG_Radio_for_8._1
             if (SQLDBPath != null)
                 return;
 
-            SQLDBPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db_sgradio.sqlite");
+            SQLDBPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db_sgradiox.sqlite");
             using (SQLiteConnection db = new SQLiteConnection(SQLDBPath))
             {
                 db.CreateTable<StarredDataSQL>();

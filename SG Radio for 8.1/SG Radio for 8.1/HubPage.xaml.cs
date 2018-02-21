@@ -150,9 +150,9 @@ namespace SG_Radio_for_8._1
 
         private void checkForFirstRun()
         {
-            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRunV4000"))
+            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRunV4001"))
             {
-                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!\n- FIXED: All the streams that have been migrated\n- FIXED: All the rebranding for the stations\n- ADDED: Various new stations\n- ADDED: Settings Charms button in AppBar for Windows 10 users\n- CHANGED: Optimized how streaming works, much less lag now\n- CHANGED: Song name now appears before the artist instead of the other way around\n- CHANGED: Current playing station and track are now neatly centered\n- CHANGED: Removed redundant Refresh button\n- WARNING: All favorites and pinned tiles need to be reset after this major update", "SG Radio Update: v4.0.0.0");
+                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!\n- FIXED: All the streams that have been migrated\n- FIXED: All the rebranding for the stations\n- ADDED: Various new stations\n- ADDED: Settings Charms button in AppBar for Windows 10 users\n- CHANGED: Optimized how streaming works, much less lag now\n- CHANGED: Song name now appears before the artist instead of the other way around\n- CHANGED: Current playing station and track are now neatly centered\n- CHANGED: Removed redundant Refresh button\n- WARNING: All favorites and pinned tiles need to be reset after this major update\n- HOTFIX [4.0.0.1]: Users with versions before V4 would face issues with favorites and starred tracks after updating - this update wipes the database to fix that", "SG Radio Update: v4.0.0.1");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
@@ -173,7 +173,7 @@ namespace SG_Radio_for_8._1
 
                 asyncCommand = messageDialog.ShowAsync();
 
-                ApplicationData.Current.RoamingSettings.Values["FirstRunV4000"] = true;
+                ApplicationData.Current.RoamingSettings.Values["FirstRunV4001"] = true;
             }
         }
 
