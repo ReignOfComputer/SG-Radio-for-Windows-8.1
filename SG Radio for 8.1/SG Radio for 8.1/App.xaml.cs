@@ -124,67 +124,68 @@ namespace SG_Radio_for_8._1
 
         async void donateYay()
         {
-            if (!CurrentApp.LicenseInformation.ProductLicenses["Donate"].IsActive)
-            {
-                try
-                {
-                    await CurrentApp.RequestProductPurchaseAsync("Donate");
-                    if (CurrentApp.LicenseInformation.ProductLicenses["Donate"].IsActive)
-                    {
-                        try
-                        {
-                            var messageDialog = new MessageDialog("Thank you for your support!", "Purchase completed");
-                            messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                            {
-                            }));
-                            messageDialog.DefaultCommandIndex = 0;
-                            await messageDialog.ShowAsync();
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine(e);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    buyException();
-                }
-            }
-            else
-            {
-                try
-                {
-                    var messageDialog = new MessageDialog("You've already supported me today.", "Notice");
-                    messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                    {
-                    }));
-                    messageDialog.DefaultCommandIndex = 0;
-                    await messageDialog.ShowAsync();
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e);
-                }
-            }
+            await Launcher.LaunchUriAsync(new Uri("https://www.paypal.me/reignofcomputer", UriKind.Absolute));
+            //if (!CurrentApp.LicenseInformation.ProductLicenses["Donate"].IsActive)
+            //{
+            //    try
+            //    {
+            //        await CurrentApp.RequestProductPurchaseAsync("Donate");
+            //        if (CurrentApp.LicenseInformation.ProductLicenses["Donate"].IsActive)
+            //        {
+            //            try
+            //            {
+            //                var messageDialog = new MessageDialog("Thank you for your support!", "Purchase completed");
+            //                messageDialog.Commands.Add(new UICommand("Close", (command) =>
+            //                {
+            //                }));
+            //                messageDialog.DefaultCommandIndex = 0;
+            //                await messageDialog.ShowAsync();
+            //            }
+            //            catch (Exception e)
+            //            {
+            //                System.Diagnostics.Debug.WriteLine(e);
+            //            }
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        buyException();
+            //    }
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        var messageDialog = new MessageDialog("You've already supported me today.", "Notice");
+            //        messageDialog.Commands.Add(new UICommand("Close", (command) =>
+            //        {
+            //        }));
+            //        messageDialog.DefaultCommandIndex = 0;
+            //        await messageDialog.ShowAsync();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        System.Diagnostics.Debug.WriteLine(e);
+            //    }
+            //}
         }
 
-        async void buyException()
-        {
-            try
-            {
-                var messageDialog = new MessageDialog("The purchase failed or was cancelled.", "Error");
-                messageDialog.Commands.Add(new UICommand("Close", (command) =>
-                {
-                }));
-                messageDialog.DefaultCommandIndex = 0;
-                await messageDialog.ShowAsync();
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e);
-            }
-        }
+        //async void buyException()
+        //{
+        //    try
+        //    {
+        //        var messageDialog = new MessageDialog("The purchase failed or was cancelled.", "Error");
+        //        messageDialog.Commands.Add(new UICommand("Close", (command) =>
+        //        {
+        //        }));
+        //        messageDialog.DefaultCommandIndex = 0;
+        //        await messageDialog.ShowAsync();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine(e);
+        //    }
+        //}
 
         async void sendEmail()
         {
