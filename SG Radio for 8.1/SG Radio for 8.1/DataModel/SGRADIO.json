@@ -28,13 +28,13 @@
           "UniqueId": "4003",
           "Title": "One FM 91.3",
           "ImagePath": "ms-appx:///Images/English/English_04.png",
-          "Content": "http://sph.rastream.com/913fm"
+          "Content": "http://20673.live.streamtheworld.com/ONE_FM_913_SC"
         },
         {
           "UniqueId": "4004",
           "Title": "Kiss 92FM",
           "ImagePath": "ms-appx:///Images/English/English_05.png",
-          "Content": "http://sph.rastream.com/sph-kiss92"
+          "Content": "http://20673.live.streamtheworld.com/KISS_92_SC"
         },
         {
           "UniqueId": "4005",
@@ -137,7 +137,7 @@
           "UniqueId": "5005",
           "Title": "UFM 1003",
           "ImagePath": "ms-appx:///Images/Others/Others_06.png",
-          "Content": "http://sph.rastream.com/1003fm"
+          "Content": "http://20673.live.streamtheworld.com/UFM_1003_SC"
         },
         {
           "UniqueId": "5006",
