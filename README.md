@@ -22,6 +22,15 @@ Most of the code you'll see here is crap, so I apologize in advance. This was de
 
 -----
 
+v4.0.0.3 - 21 June 2018
+- FIXED: SPH migrated some of their streams, thanks everyone who reported.
+
+v4.0.0.2 - 7th March 2018
+- CHANGED: Microsoft apparently changed their policies (probably in a bid to piss off more developers and get them off their platform), so here's a quick change to appease them regarding donation links
+
+v4.0.0.1 - 21st February 2018
+- HOTFIX: Users with versions before V4 would face issues with favorites and starred tracks after updating - this update wipes the database to fix that
+
 v4.0.0.0 - 19th February 2018
 - Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!
 - FIXED: All the streams that have been migrated
