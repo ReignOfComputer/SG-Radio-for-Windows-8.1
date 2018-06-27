@@ -176,12 +176,12 @@
                     }
                 case "4003":
                     {
-                        itemStream = "http://sph.rastream.com/913fm";
+                        itemStream = "http://20673.live.streamtheworld.com/ONE_FM_913_SC";
                         break;
                     }
                 case "4004":
                     {
-                        itemStream = "http://sph.rastream.com/sph-kiss92";
+                        itemStream = "http://20673.live.streamtheworld.com/KISS_92_SC";
                         break;
                     }
                 case "4005":
@@ -261,7 +261,7 @@
                     }
                 case "5005":
                     {
-                        itemStream = "http://sph.rastream.com/1003fm";
+                        itemStream = "http://20673.live.streamtheworld.com/UFM_1003_SC";
                         break;
                     }
                 case "5006":

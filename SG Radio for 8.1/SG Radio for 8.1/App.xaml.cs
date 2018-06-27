@@ -189,7 +189,7 @@ namespace SG_Radio_for_8._1
 
         async void sendEmail()
         {
-            await Launcher.LaunchUriAsync(new Uri("mailto://roc@reignofcomputer.com?subject=SG Radio for Windows Store - v4.0.0.3", UriKind.Absolute));
+            await Launcher.LaunchUriAsync(new Uri("mailto://roc@reignofcomputer.com?subject=SG Radio for Windows Store - v4.0.0.4", UriKind.Absolute));
         }
 
         private readonly string[] titleId = { "4000", "4001", "4002", "4003", "4004", "4005", "4006", "4007", "4008", "4009", "4010", "4011", "4012", "4013", "4014",
