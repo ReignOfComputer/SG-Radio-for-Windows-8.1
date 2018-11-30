@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="20694ReignOfComputer.SGRadio" Publisher="CN=69802431-4C2F-4F54-9F7C-89625511DFEA" Version="4.0.0.4" />
+  <Identity Name="20694ReignOfComputer.SGRadio" Publisher="CN=69802431-4C2F-4F54-9F7C-89625511DFEA" Version="4.0.0.5" />
   <Properties>
     <DisplayName>SG Radio</DisplayName>
     <PublisherDisplayName>ReignOfComputer</PublisherDisplayName>

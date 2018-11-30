@@ -171,7 +171,7 @@
                     }
                 case "4002":
                     {
-                        itemStream = "http://mediacorp.rastream.com/905fm";
+                        itemStream = "https://14083.live.streamtheworld.com/GOLD905AAC.aac";
                         break;
                     }
                 case "4003":
@@ -186,17 +186,17 @@
                     }
                 case "4005":
                     {
-                        itemStream = "http://mediacorp.rastream.com/924fm";
+                        itemStream = "https://19263.live.streamtheworld.com/SYMPHONY924AAC.aac";
                         break;
                     }
                 case "4006":
                     {
-                        itemStream = "http://mediacorp.rastream.com/938fm";
+                        itemStream = "https://14083.live.streamtheworld.com/938NOWAAC.aac";
                         break;
                     }
                 case "4007":
                     {
-                        itemStream = "http://mediacorp.rastream.com/950fm";
+                        itemStream = "https://19813.live.streamtheworld.com/CLASS95AAC.aac";
                         break;
                     }
                 case "4008":
@@ -206,7 +206,7 @@
                     }
                 case "4009":
                     {
-                        itemStream = "http://mediacorp.rastream.com/987fm";
+                        itemStream = "https://19213.live.streamtheworld.com/987FMAAC.aac";
                         break;
                     }
                 case "4010":
@@ -241,12 +241,12 @@
                     }
                 case "5001":
                     {
-                        itemStream = "http://mediacorp.rastream.com/933fm";
+                        itemStream = "https://19253.live.streamtheworld.com/YES933AAC.aac";
                         break;
                     }
                 case "5002":
                     {
-                        itemStream = "http://mediacorp.rastream.com/958fm";
+                        itemStream = "https://14963.live.streamtheworld.com/CAPITAL958FMAAC.aac";
                         break;
                     }
                 case "5003":
@@ -256,7 +256,7 @@
                     }
                 case "5004":
                     {
-                        itemStream = "http://mediacorp.rastream.com/972f";
+                        itemStream = "https://14613.live.streamtheworld.com/LOVE972FMAAC.aac";
                         break;
                     }
                 case "5005":
@@ -266,17 +266,17 @@
                     }
                 case "5006":
                     {
-                        itemStream = "http://mediacorp.rastream.com/897fm";
+                        itemStream = "https://18823.live.streamtheworld.com/RIA897FMAAC.aac";
                         break;
                     }
                 case "5007":
                     {
-                        itemStream = "http://mediacorp.rastream.com/942fm";
+                        itemStream = "https://19263.live.streamtheworld.com/WARNA942FMAAC.aac";
                         break;
                     }
                 case "5008":
                     {
-                        itemStream = "http://mediacorp.rastream.com/968fm";
+                        itemStream = "https://14083.live.streamtheworld.com/OLI968FMAAC.aac";
                         break;
                     }
                 case "5009":
@@ -308,6 +308,7 @@
 
         public static string getTitle(string id)
         {
+            // Deprecated
             string mediacorpAPI;
             switch (id)
             {

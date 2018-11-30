@@ -115,3 +115,11 @@ namespace SG_Radio_for_8._1.Data
         }
     }
 }
+        /*
+        {
+          "UniqueId": "5011",
+          "Title": "DesiNetworks",
+          "ImagePath": "ms-appx:///Images/Others/Others_12.png",
+          "Content": "http://192.99.8.192:3224/;stream.nsv"
+        },
+        */

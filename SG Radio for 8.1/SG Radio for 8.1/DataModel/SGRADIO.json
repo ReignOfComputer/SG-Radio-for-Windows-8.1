@@ -22,7 +22,7 @@
           "UniqueId": "4002",
           "Title": "GOLD 90.5FM",
           "ImagePath": "ms-appx:///Images/English/English_03.png",
-          "Content": "http://mediacorp.rastream.com/905fm"
+          "Content": "https://14083.live.streamtheworld.com/GOLD905AAC.aac"
         },
         {
           "UniqueId": "4003",
@@ -40,19 +40,19 @@
           "UniqueId": "4005",
           "Title": "Symphony 92.4FM",
           "ImagePath": "ms-appx:///Images/English/English_06.png",
-          "Content": "http://mediacorp.rastream.com/924fm"
+          "Content": "https://19263.live.streamtheworld.com/SYMPHONY924AAC.aac"
         },
         {
           "UniqueId": "4006",
           "Title": "938Now",
           "ImagePath": "ms-appx:///Images/English/English_07.png",
-          "Content": "http://mediacorp.rastream.com/938fm"
+          "Content": "https://14083.live.streamtheworld.com/938NOWAAC.aac"
         },
         {
           "UniqueId": "4007",
           "Title": "Class 95FM",
           "ImagePath": "ms-appx:///Images/English/English_08.png",
-          "Content": "http://mediacorp.rastream.com/950fm"
+          "Content": "https://19813.live.streamtheworld.com/CLASS95AAC.aac"
         },
         {
           "UniqueId": "4008",
@@ -64,7 +64,7 @@
           "UniqueId": "4009",
           "Title": "987FM",
           "ImagePath": "ms-appx:///Images/English/English_10.png",
-          "Content": "http://mediacorp.rastream.com/987fm"
+          "Content": "https://19213.live.streamtheworld.com/987FMAAC.aac"
         },
         {
           "UniqueId": "4010",
@@ -113,13 +113,13 @@
           "UniqueId": "5001",
           "Title": "Y.E.S. 93.3FM",
           "ImagePath": "ms-appx:///Images/Others/Others_02.png",
-          "Content": "http://mediacorp.rastream.com/933fm"
+          "Content": "https://19253.live.streamtheworld.com/YES933AAC.aac"
         },
         {
           "UniqueId": "5002",
           "Title": "Capital 95.8FM",
           "ImagePath": "ms-appx:///Images/Others/Others_03.png",
-          "Content": "http://mediacorp.rastream.com/958fm"
+          "Content": "https://14963.live.streamtheworld.com/CAPITAL958FMAAC.aac"
         },
         {
           "UniqueId": "5003",
@@ -131,7 +131,7 @@
           "UniqueId": "5004",
           "Title": "Love 97.2FM",
           "ImagePath": "ms-appx:///Images/Others/Others_05.png",
-          "Content": "http://mediacorp.rastream.com/972fm"
+          "Content": "https://14613.live.streamtheworld.com/LOVE972FMAAC.aac"
         },
         {
           "UniqueId": "5005",
@@ -143,19 +143,19 @@
           "UniqueId": "5006",
           "Title": "Ria 89.7FM",
           "ImagePath": "ms-appx:///Images/Others/Others_07.png",
-          "Content": "http://mediacorp.rastream.com/897fm"
+          "Content": "https://18823.live.streamtheworld.com/RIA897FMAAC.aac"
         },
         {
           "UniqueId": "5007",
           "Title": "Warna 94.2FM",
           "ImagePath": "ms-appx:///Images/Others/Others_08.png",
-          "Content": "http://mediacorp.rastream.com/942fm"
+          "Content": "https://19263.live.streamtheworld.com/WARNA942FMAAC.aac"
         },
         {
           "UniqueId": "5008",
           "Title": "Oli 96.8FM",
           "ImagePath": "ms-appx:///Images/Others/Others_09.png",
-          "Content": "http://mediacorp.rastream.com/968fm"
+          "Content": "https://14083.live.streamtheworld.com/OLI968FMAAC.aac"
         },
         {
           "UniqueId": "5009",
@@ -168,12 +168,6 @@
           "Title": "Naga FM",
           "ImagePath": "ms-appx:///Images/Others/Others_11.png",
           "Content": "http://songs.nagafm.com:8006/stream/1/"
-        },
-        {
-          "UniqueId": "5011",
-          "Title": "DesiNetworks",
-          "ImagePath": "ms-appx:///Images/Others/Others_12.png",
-          "Content": "http://192.99.8.192:3224/;stream.nsv"
         },
         {
           "UniqueId": "5012",

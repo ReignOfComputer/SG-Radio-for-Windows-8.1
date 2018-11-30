@@ -150,9 +150,9 @@ namespace SG_Radio_for_8._1
 
         private void checkForFirstRun()
         {
-            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRunV4004"))
+            if (!ApplicationData.Current.RoamingSettings.Values.ContainsKey("FirstRunV4005"))
             {
-                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!\n- FIXED: All the streams that have been migrated\n- FIXED: All the rebranding for the stations\n- ADDED: Various new stations\n- ADDED: Settings Charms button in AppBar for Windows 10 users\n- CHANGED: Optimized how streaming works, much less lag now\n- CHANGED: Song name now appears before the artist instead of the other way around\n- CHANGED: Current playing station and track are now neatly centered\n- CHANGED: Removed redundant Refresh button\n- WARNING: All favorites and pinned tiles need to be reset after this major update\n- HOTFIX [4.0.0.1]: Users with versions before V4 would face issues with favorites and starred tracks after updating - this update wipes the database to fix that\n- CHANGED [4.0.0.2]: Microsoft apparently changed their policies (probably in a bid to piss off more developers and get them off their platform), so here's a quick change to appease them regarding donation links\n- FIXED [4.0.0.3]: SPH migrated some of their streams, thanks everyone who reported.\n- FIXED [4.0.0.4]: Whoops, updated the streams but not the favorites. SPH Favorites should be working again.", "SG Radio Update: v4.0.0.4");
+                var messageDialog = new MessageDialog("Welcome to SG Radio!\n\nChangelog:\n- Whoa, it's been over 3 years since the last update! Were you an active user of SG Radio? Let me know how I did by rating the app!\n- FIXED: All the streams that have been migrated\n- FIXED: All the rebranding for the stations\n- ADDED: Various new stations\n- ADDED: Settings Charms button in AppBar for Windows 10 users\n- CHANGED: Optimized how streaming works, much less lag now\n- CHANGED: Song name now appears before the artist instead of the other way around\n- CHANGED: Current playing station and track are now neatly centered\n- CHANGED: Removed redundant Refresh button\n- WARNING: All favorites and pinned tiles need to be reset after this major update\n- HOTFIX [4.0.0.1]: Users with versions before V4 would face issues with favorites and starred tracks after updating - this update wipes the database to fix that\n- CHANGED [4.0.0.2]: Microsoft apparently changed their policies (probably in a bid to piss off more developers and get them off their platform), so here's a quick change to appease them regarding donation links\n- FIXED [4.0.0.3]: SPH migrated some of their streams, thanks everyone who reported.\n- FIXED [4.0.0.4]: Whoops, updated the streams but not the favorites. SPH Favorites should be working again.\n- FIXED [4.0.0.5]: Nice, Mediacorp updated their streams again.", "SG Radio Update: v4.0.0.5");
                 messageDialog.Commands.Add(new UICommand("Close", (command) =>
                 {
                 }));
@@ -173,7 +173,7 @@ namespace SG_Radio_for_8._1
 
                 asyncCommand = messageDialog.ShowAsync();
 
-                ApplicationData.Current.RoamingSettings.Values["FirstRunV4004"] = true;
+                ApplicationData.Current.RoamingSettings.Values["FirstRunV4005"] = true;
             }
         }
 
@@ -294,7 +294,8 @@ namespace SG_Radio_for_8._1
             var itemContent = ((SGRADIODataItem)e.ClickedItem).Content;
 
             if (station0.Contains(itemId))
-                stationType = 0;
+                // stationType = 0; // DEPRECATED
+                stationType = 1; // Handle Mediacorp like SPH
             else if (station1.Contains(itemId))
                 stationType = 1;
             else if (station2.Contains(itemId))
@@ -337,7 +338,8 @@ namespace SG_Radio_for_8._1
             var itemContent = Constants.getStream(itemId);
 
             if (station0.Contains(itemId))
-                stationType = 0;
+                // stationType = 0; // DEPRECATED
+                stationType = 1; // Handle Mediacorp like SPH
             else if (station1.Contains(itemId))
                 stationType = 1;
             else if (station2.Contains(itemId))
@@ -593,7 +595,8 @@ namespace SG_Radio_for_8._1
             else
             {
                 if (station0.Contains(globalId))
-                    efrTickStationType = 0;
+                    // efrTickStationType = 0; // DEPRECATED
+                    efrTickStationType = 1; // Handle Mediacorp like SPH
                 else if (station1.Contains(globalId))
                     efrTickStationType = 1;
                 else if (station2.Contains(globalId))
@@ -605,7 +608,7 @@ namespace SG_Radio_for_8._1
             }
 
             if (efrTickStationType == 0)
-                mediacorpTitle(type, appbarMode);
+                mediacorpTitle(type, appbarMode); // DEPRECATED
             else if (efrTickStationType == 1)
                 sphTitle(type, appbarMode);
             else if (efrTickStationType == 2)
@@ -629,7 +632,8 @@ namespace SG_Radio_for_8._1
 
         private async void mediacorpTitle(int type, int appbarMode)
         {
-            var uri = new Uri("http://liveradio.toggle.sg/api/playouthistory?stationId=905fm");
+            // Deprecated
+            var uri = new Uri("https://live.meradio.sg/api/streaminfo/public/nowplaying?mountName=GOLD905AAC&numberToFetch=1&eventType=track");
             var client = new HttpClient();
             string finalId = "4000";
             if (appbarMode == 0)
@@ -721,17 +725,50 @@ namespace SG_Radio_for_8._1
                     case "4001":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=MONEY_893&numberToFetch=1");
                         break;
+                    case "4002":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=GOLD905AAC&numberToFetch=1");
+                        break;
                     case "4003":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=ONE_FM_913&numberToFetch=1");
                         break;
                     case "4004":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=KISS_92&numberToFetch=1");
                         break;
+                    case "4005":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=SYMPHONY924AAC&numberToFetch=1");
+                        break;
+                    case "4006":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=938NOWAAC&numberToFetch=1");
+                        break;
+                    case "4007":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=CLASS95AAC&numberToFetch=1");
+                        break;
+                    case "4009":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=987FMAAC&numberToFetch=1");
+                        break;
+                    case "5001":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=YES933AAC&numberToFetch=1");
+                        break;
+                    case "5002":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=CAPITAL958FMAAC&numberToFetch=1");
+                        break;
                     case "5003":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=HAO_963&numberToFetch=1");
                         break;
+                    case "5004":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=LOVE972FMAAC&numberToFetch=1");
+                        break;
                     case "5005":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=UFM_1003&numberToFetch=1");
+                        break;
+                    case "5006":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=RIA897FMAAC&numberToFetch=1");
+                        break;
+                    case "5007":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=WARNA942FMAAC&numberToFetch=1");
+                        break;
+                    case "5008":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=OLI968FMAAC&numberToFetch=1");
                         break;
                     default:
                         break;
@@ -745,17 +782,50 @@ namespace SG_Radio_for_8._1
                     case "4001":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=MONEY_893&numberToFetch=1");
                         break;
+                    case "4002":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=GOLD905AAC&numberToFetch=1");
+                        break;
                     case "4003":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=ONE_FM_913&numberToFetch=1");
                         break;
                     case "4004":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=KISS_92&numberToFetch=1");
                         break;
+                    case "4005":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=SYMPHONY924AAC&numberToFetch=1");
+                        break;
+                    case "4006":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=938NOWAAC&numberToFetch=1");
+                        break;
+                    case "4007":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=CLASS95AAC&numberToFetch=1");
+                        break;
+                    case "4009":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=987FMAAC&numberToFetch=1");
+                        break;
+                    case "5001":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=YES933AAC&numberToFetch=1");
+                        break;
+                    case "5002":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=CAPITAL958FMAAC&numberToFetch=1");
+                        break;
                     case "5003":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=HAO_963&numberToFetch=1");
                         break;
+                    case "5004":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=LOVE972FMAAC&numberToFetch=1");
+                        break;
                     case "5005":
                         uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=UFM_1003&numberToFetch=1");
+                        break;
+                    case "5006":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=RIA897FMAAC&numberToFetch=1");
+                        break;
+                    case "5007":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=WARNA942FMAAC&numberToFetch=1");
+                        break;
+                    case "5008":
+                        uri = new Uri("http://np.tritondigital.com/public/nowplaying?mountName=OLI968FMAAC&numberToFetch=1");
                         break;
                     default:
                         break;
